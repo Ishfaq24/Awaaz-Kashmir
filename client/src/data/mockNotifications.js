@@ -1,0 +1,38 @@
+export const notifications = [
+  {
+    id: 1,
+    title: "Road Damage Verified",
+    message: "5 citizens confirmed your report.",
+    type: "success",
+    time: "2 min ago",
+    reportId: 1,
+    read: false,
+  },
+  {
+    id: 2,
+    title: "Department Assigned",
+    message: "Roads & Buildings Department accepted the report.",
+    type: "info",
+    time: "10 min ago",
+    reportId: 2,
+    read: false,
+  },
+  {
+    id: 3,
+    title: "Issue Resolved",
+    message: "Street Light issue has been resolved.",
+    type: "success",
+    time: "1 hour ago",
+    reportId: 3,
+    read: true,
+  },
+  {
+    id: 4,
+    title: "New Nearby Issue",
+    message: "Water leakage reported nearby.",
+    type: "warning",
+    time: "2 hours ago",
+    reportId: 4,
+    read: false,
+  },
+];
