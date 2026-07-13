@@ -1,42 +1,109 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   MapPin,
   FileText,
   RefreshCw,
   TriangleAlert,
   Eye,
+  Mic,
+  MicOff,
+  Type
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import useNearbyReports from "../../hooks/useNearbyReports";
-
+import Modal from "../common/Modal";
+import { reverseGeocode } from "../../utils/geocode";
 
 export default function ReportForm({
+  title,
+  setTitle,
   description,
   setDescription,
   location,
   setLocation,
   reportId
 }) {
+  const [alertMessage, setAlertMessage] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [language, setLanguage] = useState("en-IN");
 
   const { data: duplicates = [] } =
   useNearbyReports(reportId);
 
   const refreshLocation = () => {
     if (!navigator.geolocation) {
-      alert("Geolocation not supported.");
+      setAlertMessage("Geolocation not supported.");
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        const address = await reverseGeocode(latitude, longitude);
         setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          address: "Current Location",
+          latitude,
+          longitude,
+          address,
         });
       },
-      () => alert("Unable to fetch location.")
+      () => setAlertMessage("Unable to fetch location.")
     );
+  };
+
+  const recognitionRef = useRef(null);
+
+  const toggleListening = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setAlertMessage("Voice typing is not supported in your browser.");
+      return;
+    }
+
+    if (isListening) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+      return;
+    }
+    
+    try {
+      const recognition = new SpeechRecognition();
+      recognitionRef.current = recognition;
+      recognition.lang = language;
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      
+      recognition.onstart = () => setIsListening(true);
+      
+      recognition.onresult = (event) => {
+        const current = event.resultIndex;
+        const transcript = event.results[current][0].transcript;
+        setDescription((prev) => prev + (prev ? " " : "") + transcript);
+      };
+      
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        setIsListening(false);
+        if (event.error === 'not-allowed') {
+          setAlertMessage("Microphone access denied. If you are on a phone using an IP address (like 192.168.x.x), you MUST use HTTPS or localhost.");
+        } else if (event.error === 'network') {
+          setAlertMessage("Network error. Voice typing requires an active internet connection.");
+        } else {
+          setAlertMessage(`Voice typing failed: ${event.error}. Ensure your browser supports it and you are on a secure connection.`);
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+      
+      recognition.start();
+    } catch (err) {
+      console.error("Failed to start speech recognition:", err);
+      setAlertMessage(`Failed to start microphone: ${err.message || 'Unknown error'}. Ensure you are on a secure connection.`);
+      setIsListening(false);
+    }
   };
 
   return (
@@ -125,7 +192,7 @@ export default function ReportForm({
       <div>
 
         <label className="text-sm font-semibold mb-3 block">
-          Current Location
+          Location Details
         </label>
 
         <div className="flex items-center justify-between rounded-2xl border px-5 py-4 bg-awaaz-background">
@@ -147,9 +214,7 @@ export default function ReportForm({
               <p className="text-sm text-gray-500">
 
                 {location.latitude
-                  ? `${location.latitude.toFixed(
-                      5
-                    )}, ${location.longitude.toFixed(5)}`
+                  ? "Location coordinates captured"
                   : "Click refresh to detect"}
 
               </p>
@@ -171,13 +236,44 @@ export default function ReportForm({
 
       </div>
 
+      {/* Title */}
+      <div>
+        <label className="text-sm font-semibold mb-3 block">
+          Issue Title
+        </label>
+        <div className="relative">
+          <Type
+            className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"
+            size={20}
+          />
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="E.g. Broken pipe flooding the street"
+            className="w-full rounded-2xl border pl-14 pr-5 py-4 bg-awaaz-background focus:outline-none focus:ring-2 focus:ring-awaaz-secondary"
+          />
+        </div>
+      </div>
+
       {/* Description */}
 
       <div>
 
-        <label className="text-sm font-semibold mb-3 block">
-          Description
-        </label>
+        <div className="flex justify-between items-center mb-3">
+          <label className="text-sm font-semibold">
+            Description <span className="text-gray-400 font-normal">(Optional)</span>
+          </label>
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="text-xs bg-awaaz-background border rounded-lg px-2 py-1 outline-none"
+          >
+            <option value="en-IN">English</option>
+            <option value="ur-PK">Urdu</option>
+            <option value="ks-IN">Kashmiri</option>
+          </select>
+        </div>
 
         <div className="relative">
 
@@ -193,16 +289,24 @@ export default function ReportForm({
               setDescription(e.target.value)
             }
             maxLength={300}
-            placeholder="Describe the issue..."
-            className="w-full rounded-2xl border pl-14 pr-5 py-5 resize-none bg-awaaz-background"
+            placeholder="Describe the issue or use voice typing..."
+            className="w-full rounded-2xl border pl-14 pr-16 py-5 resize-none bg-awaaz-background focus:outline-none focus:ring-2 focus:ring-awaaz-secondary"
           />
+          
+          <button
+            type="button"
+            onClick={toggleListening}
+            className={`absolute right-4 top-4 p-2 rounded-xl transition-all ${isListening ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-awaaz-secondary/10 text-awaaz-secondary hover:bg-awaaz-secondary/20'}`}
+          >
+            {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+          </button>
 
         </div>
 
         <div className="flex justify-between mt-3 text-sm text-gray-500">
 
           <span>
-            AI will improve your description.
+            {isListening ? "Listening..." : "Click the mic to speak your description"}
           </span>
 
           <span>
@@ -212,6 +316,23 @@ export default function ReportForm({
         </div>
 
       </div>
+
+      <Modal
+        isOpen={!!alertMessage}
+        onClose={() => setAlertMessage("")}
+        title="Location Error"
+        hideCancel={true}
+        actionButton={
+          <button
+            onClick={() => setAlertMessage("")}
+            className="px-4 py-2 rounded-xl bg-awaaz-secondary hover:bg-awaaz-secondary/90 text-white font-medium"
+          >
+            OK
+          </button>
+        }
+      >
+        <p className="text-gray-600">{alertMessage}</p>
+      </Modal>
 
     </div>
   );

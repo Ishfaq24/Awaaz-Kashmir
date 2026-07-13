@@ -5,14 +5,15 @@ import {
   getNotifications,
   markAsRead,
   markAllAsRead,
+  deleteNotificationService,
 } from "../services/notification.service.js";
 
 export const getUserNotifications = asyncHandler(
   async (req, res) => {
     const { clerkId } = req.params;
+    const { role } = req.query; // pass ?role=admin to fetch admin notifications
 
-    const notifications =
-      await getNotifications(clerkId);
+    const notifications = await getNotifications(clerkId, role);
 
     return res.status(200).json(
       new ApiResponse(
@@ -26,8 +27,7 @@ export const getUserNotifications = asyncHandler(
 
 export const readNotification = asyncHandler(
   async (req, res) => {
-    const notification =
-      await markAsRead(req.params.id);
+    const notification = await markAsRead(req.params.id);
 
     return res.status(200).json(
       new ApiResponse(
@@ -39,11 +39,12 @@ export const readNotification = asyncHandler(
   }
 );
 
-export const readAllNotifications =
-  asyncHandler(async (req, res) => {
-    await markAllAsRead(
-      req.params.clerkId
-    );
+export const readAllNotifications = asyncHandler(
+  async (req, res) => {
+    const { clerkId } = req.params;
+    const { role } = req.query;
+    
+    await markAllAsRead(clerkId, role);
 
     return res.status(200).json(
       new ApiResponse(
@@ -52,4 +53,19 @@ export const readAllNotifications =
         "All notifications marked as read"
       )
     );
-  });
+  }
+);
+
+export const deleteNotification = asyncHandler(
+  async (req, res) => {
+    await deleteNotificationService(req.params.id);
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {},
+        "Notification deleted"
+      )
+    );
+  }
+);

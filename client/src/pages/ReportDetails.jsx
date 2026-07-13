@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 
 import api from "../lib/api";
+import Loading from "../components/common/Loading";
 
 const fetchReport = async (id) => {
   const { data } = await api.get(`/reports/${id}`);
@@ -94,11 +95,7 @@ export default function ReportDetails() {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-[70vh]">
-        <h2 className="text-2xl font-bold">Loading Report...</h2>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error || !report) {
@@ -129,17 +126,17 @@ export default function ReportDetails() {
               "https://placehold.co/600x400?text=No+Image"
             }
             alt={report.title}
-            className="rounded-3xl w-full h-[420px] object-cover"
+            className="rounded-3xl w-full h-64 md:h-[420px] object-cover"
           />
         </div>
 
         {/* Details */}
 
         <div className="xl:col-span-3 space-y-6">
-          <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-8">
+          <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-4 md:p-8">
             <div className="flex justify-between items-start">
               <div>
-                <h1 className="text-4xl font-bold">{report.title}</h1>
+                <h1 className="text-2xl md:text-4xl font-semibold md:font-bold">{report.title}</h1>
 
                 <p className="text-awaaz-muted mt-3">{report.description}</p>
               </div>
@@ -187,10 +184,10 @@ export default function ReportDetails() {
 
           {/* Status */}
 
-          <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-8">
-            <h2 className="text-2xl font-bold mb-6">Report Status</h2>
+          <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-4 md:p-8">
+            <h2 className="text-xl md:text-2xl font-semibold md:font-bold mb-4 md:mb-6">Report Status</h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
               <StatusCard title="Status" value={report.status} />
 
               <StatusCard title="Category" value={report.category} />
@@ -245,8 +242,8 @@ export default function ReportDetails() {
 
           {/* AI */}
 
-          <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-8">
-            <h2 className="text-2xl font-bold mb-6">AI Analysis</h2>
+          <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-4 md:p-8">
+            <h2 className="text-xl md:text-2xl font-semibold md:font-bold mb-4 md:mb-6">AI Analysis</h2>
 
             <div className="space-y-4">
               <p>
@@ -268,8 +265,8 @@ export default function ReportDetails() {
 <MiniMap report={report} />
           {/* Timeline */}
 
-          <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-8">
-            <h2 className="text-2xl font-bold mb-6">Timeline</h2>
+          <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-4 md:p-8">
+            <h2 className="text-xl md:text-2xl font-semibold md:font-bold mb-4 md:mb-6">Timeline</h2>
 
             <div className="space-y-5">
               {report.timeline?.map((item) => (
@@ -289,8 +286,8 @@ export default function ReportDetails() {
               ))}
             </div>
           </div>
-          <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-8">
-            <h2 className="text-2xl font-bold mb-6">Community Comments</h2>
+          <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-4 md:p-8">
+            <h2 className="text-xl md:text-2xl font-semibold md:font-bold mb-4 md:mb-6">Community Comments</h2>
 
             <div className="space-y-5">
               {comments.length === 0 ? (
@@ -393,7 +390,7 @@ function InfoCard({ icon, title, value }) {
       <div>
         <p className="text-sm text-awaaz-muted">{title}</p>
 
-        <h3 className="font-semibold">{value}</h3>
+        <h3 className="text-sm md:text-base font-medium md:font-semibold">{value}</h3>
       </div>
     </div>
   );
@@ -404,7 +401,7 @@ function StatusCard({ title, value }) {
     <div className="rounded-2xl bg-awaaz-background p-5 text-center">
       <p className="text-sm text-awaaz-muted">{title}</p>
 
-      <h3 className="text-xl font-bold mt-2">{value}</h3>
+      <h3 className="text-lg md:text-xl font-semibold md:font-bold mt-1 md:mt-2">{value}</h3>
     </div>
   );
 }

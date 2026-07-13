@@ -5,16 +5,17 @@ import {
   ClipboardList,
   BarChart3,
   User,
-  Settings,
   LogOut,
   Shield,
-  Bell,
-  Users,
+  X
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useUser } from "@clerk/clerk-react";
+import {
+  useUser,
+  useClerk,
+} from "@clerk/clerk-react";
 
 const citizenLinks = [
   {
@@ -23,7 +24,7 @@ const citizenLinks = [
     icon: LayoutDashboard,
   },
   {
-    title: "Upload Issue",
+    title: "Report Issue",
     path: "/upload",
     icon: Upload,
   },
@@ -33,19 +34,9 @@ const citizenLinks = [
     icon: Map,
   },
   {
-    title: "Reports",
+    title: "My Reports",
     path: "/reports",
     icon: ClipboardList,
-  },
-  {
-    title: "Analytics",
-    path: "/analytics",
-    icon: BarChart3,
-  },
-  {
-    title: "Notifications",
-    path: "/notifications",
-    icon: Bell,
   },
   {
     title: "Profile",
@@ -75,20 +66,11 @@ const adminLinks = [
     path: "/analytics",
     icon: BarChart3,
   },
-  {
-    title: "Notifications",
-    path: "/notifications",
-    icon: Bell,
-  },
-  {
-    title: "Citizens",
-    path: "/admin/users",
-    icon: Users,
-  },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, setIsOpen }) {
   const { user } = useUser();
+  const { signOut } = useClerk();
 
   const isAdmin =
     user?.id ===
@@ -99,14 +81,27 @@ export default function Sidebar() {
     : citizenLinks;
 
   return (
-    <aside className="w-72 h-screen sticky top-0 bg-awaaz-primary text-awaaz-surface flex flex-col">
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsOpen && setIsOpen(false)}
+        />
+      )}
+
+      <aside className={`
+        fixed lg:static top-0 left-0 h-screen w-72 bg-awaaz-primary text-awaaz-surface flex flex-col z-50
+        transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}>
 
       {/* Logo */}
 
-      <div className="h-24 flex items-center px-8 border-b border-white/10">
-
-        <div
-          className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl text-white ${
+      <div className="h-24 flex items-center justify-between px-8 border-b border-white/10">
+        <div className="flex items-center">
+          <div
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white ${
             isAdmin
               ? "bg-red-600"
               : "bg-awaaz-secondary"
@@ -115,7 +110,9 @@ export default function Sidebar() {
           {isAdmin ? (
             <Shield size={24} />
           ) : (
-            "A"
+            <span className="font-bold text-xl">
+              A
+            </span>
           )}
         </div>
 
@@ -127,13 +124,22 @@ export default function Sidebar() {
               : "Awaaz Kashmir"}
           </h2>
 
-          <p className="text-awaaz-surface/70 text-sm">
+          <p className="text-sm text-white/70">
             {isAdmin
               ? "Super Administrator"
               : "AI Civic Platform"}
           </p>
 
         </div>
+        </div>
+
+        {/* Mobile Close Button */}
+        <button 
+          className="lg:hidden text-white/70 hover:text-white"
+          onClick={() => setIsOpen && setIsOpen(false)}
+        >
+          <X size={24} />
+        </button>
 
       </div>
 
@@ -147,15 +153,15 @@ export default function Sidebar() {
           return (
             <motion.div
               key={item.path}
-              whileHover={{ x: 6 }}
+              whileHover={{ x: 5 }}
             >
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
                   `flex items-center gap-4 px-5 py-4 rounded-2xl transition-all ${
                     isActive
-                      ? "bg-awaaz-secondary text-white"
-                      : "hover:bg-white/10"
+                      ? "bg-awaaz-secondary text-white shadow-lg"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
                   }`
                 }
               >
@@ -173,26 +179,23 @@ export default function Sidebar() {
 
       {/* Footer */}
 
-      <div className="border-t border-white/10 p-5 space-y-3">
+      <div className="border-t border-white/10 p-5">
 
-        <button className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/10 transition-all">
-
-          <Settings size={20} />
-
-          Settings
-
-        </button>
-
-        <button className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-awaaz-accent hover:bg-white/10 transition-all">
-
+        <button
+          onClick={() => signOut()}
+          className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-red-300 hover:bg-red-500/10 transition-all"
+        >
           <LogOut size={20} />
 
-          Logout
+          <span className="font-medium">
+            Logout
+          </span>
 
         </button>
 
       </div>
 
     </aside>
+    </>
   );
 }

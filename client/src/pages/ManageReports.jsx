@@ -23,6 +23,8 @@ import {
   resolveReport,
   deleteReport,
 } from "../api/report";
+import Modal from "../components/common/Modal";
+import Loading from "../components/common/Loading";
 
 export default function ManageReports() {
   const queryClient = useQueryClient();
@@ -31,6 +33,10 @@ export default function ManageReports() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
   const [severity, setSeverity] = useState("All");
+
+  const [reportToDelete, setReportToDelete] = useState(null);
+  const [reportToResolve, setReportToResolve] = useState(null);
+  const [resolutionNotes, setResolutionNotes] = useState("");
 
   const { data: reports = [], isLoading } = useQuery({
     queryKey: ["reports"],
@@ -106,11 +112,7 @@ export default function ManageReports() {
   }, [reports, search, status, severity]);
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center py-20">
-        <Loader className="animate-spin" />
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -321,18 +323,8 @@ export default function ManageReports() {
 
                     <button
                       onClick={() => {
-                        const notes =
-                          prompt(
-                            "Resolution Notes"
-                          );
-
-                        if (!notes) return;
-
-                        resolveMutation.mutate({
-                          id: report._id,
-                          notes,
-                          clerkId: user.id,
-                        });
+                        setReportToResolve(report);
+                        setResolutionNotes("");
                       }}
                       className="bg-green-600 hover:bg-green-700 text-white rounded-lg px-3 py-2"
                     >
@@ -344,18 +336,7 @@ export default function ManageReports() {
                     {/* Delete */}
 
                     <button
-                      onClick={() => {
-                        const confirmDelete = window.confirm(
-                          "Delete this report?"
-                        );
-
-                        if (!confirmDelete) return;
-
-                        deleteMutation.mutate({
-                          id: report._id,
-                          clerkId: user.id,
-                        });
-                      }}
+                      onClick={() => setReportToDelete(report)}
                       className="bg-red-600 hover:bg-red-700 text-white rounded-lg px-3 py-2"
                     >
                       <Trash2 size={16} />
@@ -379,6 +360,65 @@ export default function ManageReports() {
           </tbody>
         </table>
       </div>
+
+      <Modal
+        isOpen={!!reportToDelete}
+        onClose={() => setReportToDelete(null)}
+        title="Delete Report"
+        actionButton={
+          <button
+            onClick={() => {
+              if (reportToDelete) {
+                deleteMutation.mutate({
+                  id: reportToDelete._id,
+                  clerkId: user.id,
+                });
+                setReportToDelete(null);
+              }
+            }}
+            className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium"
+          >
+            Delete
+          </button>
+        }
+      >
+        <p className="text-gray-600">Are you sure you want to delete this report? This action cannot be undone.</p>
+      </Modal>
+
+      <Modal
+        isOpen={!!reportToResolve}
+        onClose={() => setReportToResolve(null)}
+        title="Resolve Report"
+        actionButton={
+          <button
+            onClick={() => {
+              if (reportToResolve && resolutionNotes) {
+                resolveMutation.mutate({
+                  id: reportToResolve._id,
+                  notes: resolutionNotes,
+                  clerkId: user.id,
+                });
+                setReportToResolve(null);
+              }
+            }}
+            disabled={!resolutionNotes}
+            className="px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 text-white font-medium disabled:opacity-50"
+          >
+            Resolve
+          </button>
+        }
+      >
+        <div className="space-y-4">
+          <p className="text-gray-600">Please enter resolution notes for this report.</p>
+          <textarea
+            value={resolutionNotes}
+            onChange={(e) => setResolutionNotes(e.target.value)}
+            className="w-full border rounded-xl p-3 resize-none focus:outline-none focus:ring-2 focus:ring-green-500"
+            rows={4}
+            placeholder="Resolution Notes..."
+          />
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import {
   Bell,
   Search,
   CalendarDays,
+  Menu
 } from "lucide-react";
 
 import { motion } from "framer-motion";
@@ -13,22 +14,14 @@ import {
   useUser,
 } from "@clerk/clerk-react";
 
-import useNotifications from "../../hooks/useNotifications";
+import NotificationDropdown from "../navbar/NotificationDropdown";
 
-export default function Navbar() {
+export default function Navbar({ toggleSidebar }) {
   
   const [time, setTime] = useState("");
 
   const { user } = useUser();
-
-console.log("Logged in user:", user?.id);
-  const {
-    data: notifications = [],
-  } = useNotifications(user?.id);
-
-  const unreadCount = notifications.filter(
-    (notification) => !notification.isRead
-  ).length;
+  const userRole = user?.publicMetadata?.role || "citizen";
 
   useEffect(() => {
     const updateClock = () => {
@@ -53,13 +46,22 @@ console.log("Logged in user:", user?.id);
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 bg-awaaz-surface/85 backdrop-blur-xl border-b border-awaaz-border">
+    <header className="sticky top-0 z-40 bg-awaaz-surface/85 backdrop-blur-xl border-b border-awaaz-border overflow-visible">
 
-      <div className="h-20 px-8 flex items-center justify-between">
+      <div className="h-20 px-4 md:px-8 flex items-center justify-between gap-4">
 
-        {/* Search */}
+        {/* Left Section (Menu + Search) */}
 
-        <div className="relative w-[420px]">
+        <div className="flex items-center gap-4 flex-1">
+
+          <button 
+            className="lg:hidden p-2 rounded-xl bg-awaaz-background border border-awaaz-border text-awaaz-muted hover:text-awaaz-text"
+            onClick={toggleSidebar}
+          >
+            <Menu size={20} />
+          </button>
+
+          <div className="relative hidden md:block w-full max-w-[420px]">
 
           <Search
             size={18}
@@ -86,6 +88,8 @@ console.log("Logged in user:", user?.id);
 
         </div>
 
+        </div>
+
         {/* Right */}
 
         <div className="flex items-center gap-6">
@@ -103,64 +107,7 @@ console.log("Logged in user:", user?.id);
           </div>
 
           {/* Notifications */}
-
-          <Link to="/notifications">
-
-            <motion.button
-              whileHover={{
-                scale: 1.08,
-              }}
-              whileTap={{
-                scale: 0.96,
-              }}
-              className="
-                relative
-                w-12
-                h-12
-                rounded-2xl
-                bg-awaaz-background
-                border
-                border-awaaz-border
-                flex
-                items-center
-                justify-center
-              "
-            >
-
-              <Bell />
-
-              {unreadCount > 0 && (
-
-                <span
-                  className="
-                    absolute
-                    -top-1
-                    -right-1
-                    min-w-[20px]
-                    h-5
-                    px-1
-                    rounded-full
-                    bg-red-500
-                    text-white
-                    text-[10px]
-                    font-bold
-                    flex
-                    items-center
-                    justify-center
-                  "
-                >
-
-                  {unreadCount > 99
-                    ? "99+"
-                    : unreadCount}
-
-                </span>
-
-              )}
-
-            </motion.button>
-
-          </Link>
+          <NotificationDropdown clerkId={user?.id} role={userRole} />
 
           {/* User */}
 

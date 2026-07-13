@@ -6,21 +6,41 @@ import {
   Camera,
   Trash2,
 } from "lucide-react";
+import exifr from "exifr";
+import { reverseGeocode } from "../../utils/geocode";
 
 export default function ImageUploader({
   image,
   setImage,
   preview,
   setPreview,
+  setLocation,
 }) {
   const inputRef = useRef(null);
 
-  const handleImage = (file) => {
+  const handleImage = async (file) => {
     if (!file) return;
 
     setImage(file);
 
     setPreview(URL.createObjectURL(file));
+
+    if (setLocation) {
+      try {
+        const gps = await exifr.gps(file);
+        if (gps && gps.latitude && gps.longitude) {
+          const { latitude, longitude } = gps;
+          const address = await reverseGeocode(latitude, longitude);
+          setLocation({
+            latitude,
+            longitude,
+            address,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to extract EXIF location", err);
+      }
+    }
   };
 
   const onChange = (e) => {
@@ -33,7 +53,7 @@ export default function ImageUploader({
   };
 
   return (
-    <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border shadow-sm p-8">
+    <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border shadow-sm p-4 md:p-8">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-2xl font-bold">
@@ -57,7 +77,7 @@ export default function ImageUploader({
             border-awaaz-border
             rounded-3xl
             bg-awaaz-background
-            h-[420px]
+            h-64 md:h-[420px]
             cursor-pointer
             flex
             flex-col
@@ -105,7 +125,7 @@ export default function ImageUploader({
           <img
             src={preview}
             alt="Preview"
-            className="rounded-3xl w-full h-[420px] object-cover"
+            className="rounded-3xl w-full h-64 md:h-[420px] object-cover"
           />
 
           <div className="flex gap-4">

@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import useNotifications from "../hooks/useNotifications";
+import Loading from "../components/common/Loading";
 
 import {
   markAsRead,
@@ -51,11 +52,7 @@ export default function Notifications() {
     });
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center py-20">
-        Loading...
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

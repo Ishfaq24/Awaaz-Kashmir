@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useUser } from "@clerk/clerk-react";
 
 import {
   verifyReport,
@@ -7,8 +8,10 @@ import {
   resolveReport,
   getReports,
 } from "../../api/report";
+import Loading from "../common/Loading";
 
 export default function ReportTable() {
+  const { user } = useUser();
   const queryClient = useQueryClient();
 
   const { data: reports = [], isLoading } = useQuery({
@@ -22,34 +25,29 @@ export default function ReportTable() {
     });
 
   const verifyMutation = useMutation({
-    mutationFn: (id) => verifyReport(id),
+    mutationFn: ({ id, clerkId }) => verifyReport(id, clerkId),
     onSuccess: refresh,
   });
 
   const assignMutation = useMutation({
-    mutationFn: ({ id, department }) =>
-      assignDepartment(id, department),
+    mutationFn: ({ id, department, clerkId }) =>
+      assignDepartment(id, department, clerkId),
     onSuccess: refresh,
   });
 
   const statusMutation = useMutation({
-    mutationFn: ({ id, status }) =>
-      changeReportStatus(id, status),
+    mutationFn: ({ id, status, clerkId }) =>
+      changeReportStatus(id, status, clerkId),
     onSuccess: refresh,
   });
 
   const resolveMutation = useMutation({
-    mutationFn: (id) =>
-      resolveReport(id, "Issue resolved by authority."),
+    mutationFn: ({ id, notes, clerkId }) =>
+      resolveReport(id, notes, clerkId),
     onSuccess: refresh,
   });
 
-  if (isLoading)
-    return (
-      <div className="bg-white rounded-3xl border p-8">
-        Loading Reports...
-      </div>
-    );
+  if (isLoading) return <Loading fullScreen={false} />;
 
   return (
     <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border shadow-sm overflow-hidden">
@@ -105,9 +103,10 @@ export default function ReportTable() {
                   <div className="flex flex-wrap gap-2 justify-center">
                     <button
                       onClick={() =>
-                        verifyMutation.mutate(
-                          report._id
-                        )
+                        verifyMutation.mutate({
+                          id: report._id,
+                          clerkId: user?.id,
+                        })
                       }
                       className="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm"
                     >
@@ -119,6 +118,7 @@ export default function ReportTable() {
                         assignMutation.mutate({
                           id: report._id,
                           department: "PWD",
+                          clerkId: user?.id,
                         })
                       }
                       className="px-3 py-2 rounded-lg bg-orange-500 text-white text-sm"
@@ -131,7 +131,7 @@ export default function ReportTable() {
                         statusMutation.mutate({
                           id: report._id,
                           status: "In Progress",
-                          clerkId: user.id,
+                          clerkId: user?.id,
                         })
                       }
                       className="px-3 py-2 rounded-lg bg-purple-600 text-white text-sm"
@@ -143,8 +143,8 @@ export default function ReportTable() {
                       onClick={() =>
                         resolveMutation.mutate({
                           id: report._id,
-                          notes,
-                          clerkId: user.id,
+                          notes: "Issue resolved by authority.",
+                          clerkId: user?.id,
                         })
                       }
                       className="px-3 py-2 rounded-lg bg-green-600 text-white text-sm"

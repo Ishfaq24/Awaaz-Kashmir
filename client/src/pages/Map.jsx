@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Search, LocateFixed } from "lucide-react";
 
 import api from "../lib/api";
+import Loading from "../components/common/Loading";
 
 import MapView from "../components/map/MapView";
 import MapLegend from "../components/map/MapLegend";
@@ -55,19 +56,19 @@ export default function Map() {
     <div className="space-y-8">
       {/* Header */}
 
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
         <div>
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-2xl sm:text-4xl font-bold">
             Live Issues Map
           </h1>
 
-          <p className="text-awaaz-muted mt-2">
+          <p className="text-awaaz-muted mt-2 text-sm sm:text-base">
             Real-time monitoring of civic issues
             across Kashmir.
           </p>
         </div>
 
-        <button className="bg-awaaz-secondary text-white rounded-2xl px-6 py-3 flex items-center gap-2">
+        <button className="bg-awaaz-secondary text-white rounded-2xl px-6 py-3 flex items-center justify-center gap-2 shrink-0">
           <LocateFixed size={18} />
           My Location
         </button>
@@ -106,18 +107,19 @@ export default function Map() {
             </div>
           </div>
 
-          <div className="relative h-[750px] rounded-3xl overflow-hidden border border-awaaz-border">
-            <AISummaryCard />
-
-            <FloatingStats />
-
+          <div className="relative h-[520px] sm:h-[600px] lg:h-[750px] rounded-3xl overflow-hidden border border-awaaz-border isolate">
             {isLoading ? (
-              <div className="flex items-center justify-center h-full">
-                Loading map...
+              <div className="h-full">
+                <Loading fullScreen={false} />
               </div>
             ) : (
               <MapView reports={filteredReports} />
             )}
+
+            <div className="absolute inset-0 z-[1000] pointer-events-none overflow-hidden p-3 sm:p-4 flex flex-col justify-between gap-2 xl:block xl:p-0">
+              <AISummaryCard />
+              <FloatingStats />
+            </div>
           </div>
         </div>
 

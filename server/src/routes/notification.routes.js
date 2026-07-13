@@ -4,6 +4,7 @@ import {
   getUserNotifications,
   readNotification,
   readAllNotifications,
+  deleteNotification,
 } from "../controllers/notification.controller.js";
 
 const router = Router();
@@ -21,6 +22,11 @@ router.patch(
 router.patch(
   "/read-all/:clerkId",
   readAllNotifications
+);
+
+router.delete(
+  "/:id",
+  deleteNotification
 );
 
 export default router;

@@ -19,6 +19,7 @@ import NotificationPanel from "../components/dashboard/NotificationPanel";
 import DepartmentPerformance from "../components/dashboard/DepartmentPerformance";
 import TopDistricts from "../components/dashboard/TopDistricts";
 import QuickActions from "../components/dashboard/QuickActions";
+import Loading from "../components/common/Loading";
 
 export default function Home() {
   const { user } = useUser();
@@ -41,20 +42,14 @@ export default function Home() {
     trends.isLoading ||
     districts.isLoading
   ) {
-    return (
-      <div className="flex items-center justify-center h-[70vh]">
-        <h2 className="text-2xl font-semibold">
-          Loading Dashboard...
-        </h2>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
     <div className="space-y-8">
       {/* Header */}
 
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-4xl font-bold">
             Welcome Back, {user?.firstName || "Citizen"} 👋
@@ -111,7 +106,7 @@ export default function Home() {
       {/* Reports + AI */}
 
       <div className="grid xl:grid-cols-2 gap-8">
-        <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-6">
+        <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-4 md:p-6">
           <h2 className="text-2xl font-bold mb-6">
             Recent Reports
           </h2>

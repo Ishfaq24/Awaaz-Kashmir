@@ -1,7 +1,7 @@
 import Report from "../models/Report.js";
 import Comment from "../models/Comment.js";
 import Confirmation from "../models/Confirmation.js";
-import { notifyUser } from "./notification.service.js";
+import { notifyUser, notifyAdmin, notifyNearbyCitizens } from "./notification.service.js";
 import { uploadBuffer } from "../config/cloudinary.js";
 
 import { getIO } from "../socket.js";
@@ -82,13 +82,31 @@ export const createReportService = async (data) => {
     calculatePriority(report);
 
   await report.save();
+  await report.save();
+  
+  getIO().emit("new-report", report);
   getIO().emit("report-updated", report);
+  
   await notifyUser(
-  report,
-  "Report Submitted",
-  "Your civic issue has been submitted successfully.",
-  "report"
-);
+    report,
+    "Report Submitted",
+    "Your civic issue has been submitted successfully.",
+    "report"
+  );
+
+  await notifyAdmin(
+    report,
+    "New Report Submitted",
+    `${report.title} reported in ${report.location?.district || "Unknown District"}.`,
+    "report"
+  );
+
+  await notifyNearbyCitizens(
+    report,
+    "Nearby Report",
+    `${report.category} reported nearby.`,
+    "report"
+  );
 
   return report;
 };
@@ -250,13 +268,21 @@ export const confirmReportService =
   calculatePriority(report);
 
     await report.save();
+    getIO().emit("report-confirmed", report);
     getIO().emit("report-updated", report);
     await notifyUser(
-  report,
-  "Community Confirmation",
-  "Another citizen confirmed your report.",
-  "confirmation"
-);
+      report,
+      "Community Confirmation",
+      "Another citizen confirmed your report.",
+      "confirmation"
+    );
+    
+    await notifyAdmin(
+      report,
+      "Report Confirmed",
+      `A citizen confirmed report: ${report.title}`,
+      "confirmation"
+    );
 
     return report;
   };
@@ -301,14 +327,22 @@ export const addCommentService = async (
   calculatePriority(report);
 
   await report.save();
+  getIO().emit("report-comment", comment);
   getIO().emit("report-updated", report);
 
   await notifyUser(
-  report,
-  "New Comment",
-  `${name} commented on your report.`,
-  "comment"
-);
+    report,
+    "New Comment",
+    `${name} commented on your report.`,
+    "comment"
+  );
+
+  await notifyAdmin(
+    report,
+    "New Comment",
+    `${name} commented on report: ${report.title}`,
+    "comment"
+  );
 
   return comment;
 };
@@ -409,11 +443,18 @@ export const changeStatusService =
       message: `Status changed to ${status}.`,
       user: "Authority",
     });
-    report.priorityScore =
-  calculatePriority(report);
+    report.priorityScore = calculatePriority(report);
 
     await report.save();
-getIO().emit("report-updated", report);
+    getIO().emit("report-updated", report);
+
+    await notifyUser(
+      report,
+      "Status Updated",
+      `Your report status has been updated to ${status}.`,
+      "system"
+    );
+
     return report;
   };
 
@@ -452,6 +493,20 @@ export const resolveReportService = async (
 
   await report.save();
   getIO().emit("report-updated", report);
+
+  await notifyUser(
+    report,
+    "Report Resolved",
+    "Your report has been marked as resolved.",
+    "resolved"
+  );
+
+  await notifyNearbyCitizens(
+    report,
+    "Nearby Report Resolved",
+    `A nearby issue (${report.title}) has been resolved.`,
+    "resolved"
+  );
 
   return report;
 };

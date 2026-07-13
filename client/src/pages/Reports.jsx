@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import ReportCard from "../components/report/ReportCard";
 import { getReports } from "../api/report";
+import Loading from "../components/common/Loading";
 
 export default function Reports() {
   const {
@@ -15,13 +16,7 @@ export default function Reports() {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-[70vh]">
-        <h2 className="text-2xl font-semibold">
-          Loading Reports...
-        </h2>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error) {
@@ -37,7 +32,7 @@ export default function Reports() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold">
+        <h1 className="text-3xl md:text-4xl font-bold">
           Community Reports
         </h1>
 
@@ -46,7 +41,7 @@ export default function Reports() {
         </p>
       </div>
 
-      <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-5">
+      <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-4 md:p-5">
         <div className="relative">
           <Search
             className="absolute left-4 top-4 text-awaaz-muted"
