@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		color: #2b1b12;
+		background-color: #f8f4ec;
+	}
+
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		@apply bg-awaaz-background text-awaaz-text antialiased;
+	}
+
+	#root {
+		min-height: 100vh;
+	}
+
+	::selection {
+		background: #d9a441;
+		color: #2b1b12;
+	}
+}
