@@ -6,11 +6,13 @@ import ReportForm from "../components/report/ReportForm";
 import TipsCard from "../components/report/TipsCard";
 import AnalyzeButton from "../components/report/AnalyzeButton";
 import UploadProgress from "../components/report/UploadProgress";
+import { reverseGeocode } from "../utils/geocode";
 
 export default function UploadIssue() {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
 
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   const [location, setLocation] = useState({
@@ -27,11 +29,13 @@ export default function UploadIssue() {
     if (!navigator.geolocation) return;
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        const address = await reverseGeocode(latitude, longitude);
         setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          address: "Current Location",
+          latitude,
+          longitude,
+          address,
         });
       },
       () => {
@@ -54,6 +58,7 @@ export default function UploadIssue() {
             setImage={setImage}
             preview={preview}
             setPreview={setPreview}
+            setLocation={setLocation}
           />
         </div>
 
@@ -67,16 +72,19 @@ export default function UploadIssue() {
         </div>
       </div>
 
-      <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border shadow-sm p-8">
+      <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border shadow-sm p-4 md:p-8">
       <ReportForm
-    description={description}
-    setDescription={setDescription}
-    location={location}
-    setLocation={setLocation}
-/>
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+        location={location}
+        setLocation={setLocation}
+      />
         <div className="mt-10">
 <AnalyzeButton
   image={image}
+  title={title}
   description={description}
   location={location}
   setUploading={setUploading}

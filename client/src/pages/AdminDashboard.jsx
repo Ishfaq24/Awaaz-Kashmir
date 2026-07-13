@@ -17,6 +17,7 @@ import {
 import StatCard from "../components/dashboard/StatCard";
 import PriorityQueue from "../components/admin/PriorityQueue";
 import AISummaryPanel from "../components/admin/AISummaryPanel";
+import Loading from "../components/common/Loading";
 
 export default function AdminDashboard() {
   const {
@@ -28,13 +29,7 @@ export default function AdminDashboard() {
   });
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-[70vh]">
-        <h2 className="text-2xl font-bold">
-          Loading Dashboard...
-        </h2>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

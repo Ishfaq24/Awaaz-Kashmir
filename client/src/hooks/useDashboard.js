@@ -6,6 +6,7 @@ import {
   getCategoryStats,
   getMonthlyTrends,
   getTopDistricts,
+  getDepartmentPerformance,
 } from "../api/dashboard";
 
 export default function useDashboard() {
@@ -34,11 +35,17 @@ export default function useDashboard() {
     queryFn: getTopDistricts,
   });
 
+  const performance = useQuery({
+    queryKey: ["dashboard-performance"],
+    queryFn: getDepartmentPerformance,
+  });
+
   return {
     stats,
     recent,
     categories,
     trends,
     districts,
+    performance,
   };
 }

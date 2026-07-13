@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
+import Home from "../../pages/Home";
 
 export default function HomeRedirect() {
   const { user, isLoaded } = useUser();
@@ -12,5 +13,5 @@ export default function HomeRedirect() {
     return <Navigate to="/admin" replace />;
   }
 
-  return <Navigate to="/home" replace />;
+  return <Home />;
 }

@@ -3,14 +3,17 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useUser } from "@clerk/clerk-react";
 
 import {
   uploadImage,
   createReport,
 } from "../../api/report";
+import Modal from "../common/Modal";
 
 export default function AnalyzeButton({
   image,
+  title,
   description,
   location,
   setUploading,
@@ -19,17 +22,14 @@ export default function AnalyzeButton({
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
+  const { user } = useUser();
 
   const [loading, setLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const handleSubmit = async () => {
     if (!image) {
-      alert("Please select an image.");
-      return;
-    }
-
-    if (!description.trim()) {
-      alert("Please enter a description.");
+      setAlertMessage("Please select an image.");
       return;
     }
 
@@ -43,18 +43,43 @@ export default function AnalyzeButton({
         const percent = Math.round(
           (event.loaded * 100) / event.total
         );
-
         setProgress(percent);
       });
 
+      let finalTitle = title ? title.trim() : "";
+      if (!finalTitle) {
+        finalTitle = "Citizen Report";
+        if (description && description.trim().length > 0) {
+          let base = description.trim().split(" ").slice(0, 6).join(" ");
+          if (description.trim().split(" ").length > 6) base += "...";
+          finalTitle = base.length > 50 ? base.substring(0, 47) + "..." : base;
+        }
+      }
+
+      const finalDescription = (description && description.trim()) || "No description provided.";
+
+      const descLower = finalDescription.toLowerCase();
+      let detectedCategory = "Other";
+      if (descLower.includes("road") || descLower.includes("pothole")) detectedCategory = "Road";
+      else if (descLower.includes("water") || descLower.includes("pipe") || descLower.includes("leak")) detectedCategory = "Water";
+      else if (descLower.includes("electric") || descLower.includes("wire") || descLower.includes("power")) detectedCategory = "Electricity";
+      else if (descLower.includes("garbage") || descLower.includes("trash") || descLower.includes("waste")) detectedCategory = "Garbage";
+      else if (descLower.includes("drain") || descLower.includes("sewage")) detectedCategory = "Drainage";
+      else if (descLower.includes("light") || descLower.includes("lamp")) detectedCategory = "Street Light";
+      else if (descLower.includes("traffic") || descLower.includes("jam")) detectedCategory = "Traffic";
+
+      let detectedSeverity = "Medium";
+      if (descLower.includes("urgent") || descLower.includes("danger") || descLower.includes("accident") || descLower.includes("severe") || descLower.includes("huge")) detectedSeverity = "High";
+      else if (descLower.includes("minor") || descLower.includes("small") || descLower.includes("slight")) detectedSeverity = "Low";
+
       await createReport({
-        title: "Citizen Report",
+        title: finalTitle,
 
-        description,
+        description: finalDescription,
 
-        category: "Other",
+        category: detectedCategory,
 
-        severity: "Medium",
+        severity: detectedSeverity,
 
         images: [uploaded],
 
@@ -67,8 +92,8 @@ export default function AnalyzeButton({
         },
 
         createdBy: {
-          clerkId: "",
-          name: "Citizen",
+          clerkId: user?.id || "",
+          name: user?.fullName || user?.firstName || "Citizen",
         },
       });
 
@@ -96,7 +121,7 @@ export default function AnalyzeButton({
     } catch (err) {
       console.error(err);
 
-      alert(
+      setAlertMessage(
         err.response?.data?.message ||
           "Failed to submit report."
       );
@@ -108,6 +133,7 @@ export default function AnalyzeButton({
   };
 
   return (
+    <>
     <motion.button
       whileHover={{ scale: 1.01 }}
       whileTap={{ scale: 0.98 }}
@@ -155,5 +181,22 @@ export default function AnalyzeButton({
 
       <ArrowRight />
     </motion.button>
+      <Modal
+        isOpen={!!alertMessage}
+        onClose={() => setAlertMessage("")}
+        title="Notice"
+        hideCancel={true}
+        actionButton={
+          <button
+            onClick={() => setAlertMessage("")}
+            className="px-4 py-2 rounded-xl bg-awaaz-secondary hover:bg-awaaz-secondary/90 text-white font-medium"
+          >
+            OK
+          </button>
+        }
+      >
+        <p className="text-gray-600">{alertMessage}</p>
+      </Modal>
+    </>
   );
 }

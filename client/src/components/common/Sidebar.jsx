@@ -7,6 +7,7 @@ import {
   User,
   LogOut,
   Shield,
+  X
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -67,7 +68,7 @@ const adminLinks = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, setIsOpen }) {
   const { user } = useUser();
   const { signOut } = useClerk();
 
@@ -80,14 +81,27 @@ export default function Sidebar() {
     : citizenLinks;
 
   return (
-    <aside className="w-72 h-screen sticky top-0 bg-awaaz-primary text-awaaz-surface flex flex-col">
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsOpen && setIsOpen(false)}
+        />
+      )}
+
+      <aside className={`
+        fixed lg:static top-0 left-0 h-screen w-72 bg-awaaz-primary text-awaaz-surface flex flex-col z-50
+        transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}>
 
       {/* Logo */}
 
-      <div className="h-24 flex items-center px-8 border-b border-white/10">
-
-        <div
-          className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white ${
+      <div className="h-24 flex items-center justify-between px-8 border-b border-white/10">
+        <div className="flex items-center">
+          <div
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white ${
             isAdmin
               ? "bg-red-600"
               : "bg-awaaz-secondary"
@@ -117,6 +131,15 @@ export default function Sidebar() {
           </p>
 
         </div>
+        </div>
+
+        {/* Mobile Close Button */}
+        <button 
+          className="lg:hidden text-white/70 hover:text-white"
+          onClick={() => setIsOpen && setIsOpen(false)}
+        >
+          <X size={24} />
+        </button>
 
       </div>
 
@@ -173,5 +196,6 @@ export default function Sidebar() {
       </div>
 
     </aside>
+    </>
   );
 }

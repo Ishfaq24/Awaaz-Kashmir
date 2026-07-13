@@ -21,6 +21,7 @@ import {
   resolveReport,
   deleteReport,
 } from "../../../api/report";
+import Modal from "../../../components/common/Modal";
 
 export default function AdminActions({
   report,
@@ -38,6 +39,8 @@ export default function AdminActions({
   const [status, setStatus] = useState(
     report.status
   );
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const refresh = () => {
     queryClient.invalidateQueries({
@@ -262,15 +265,7 @@ export default function AdminActions({
         {/* Delete */}
 
         <button
-          onClick={() => {
-            if (
-              window.confirm(
-                "Delete this report permanently?"
-              )
-            ) {
-              deleteMutation.mutate();
-            }
-          }}
+          onClick={() => setIsDeleteModalOpen(true)}
           className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl py-3 flex justify-center gap-2"
         >
 
@@ -282,6 +277,24 @@ export default function AdminActions({
 
       </div>
 
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title="Delete Report"
+        actionButton={
+          <button
+            onClick={() => {
+              setIsDeleteModalOpen(false);
+              deleteMutation.mutate();
+            }}
+            className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium"
+          >
+            Delete Permanently
+          </button>
+        }
+      >
+        <p className="text-gray-600">Are you sure you want to delete this report? This action cannot be undone.</p>
+      </Modal>
     </div>
   );
 }

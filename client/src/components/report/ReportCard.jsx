@@ -48,7 +48,7 @@ export default function ReportCard({ report }) {
         className="h-52 w-full object-cover"
       />
 
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         <div className="flex justify-between">
           <span
             className={`px-3 py-1 rounded-full text-sm font-medium ${
@@ -69,26 +69,26 @@ export default function ReportCard({ report }) {
           </span>
         </div>
 
-        <h2 className="text-2xl font-bold mt-5">
+        <h2 className="text-xl md:text-2xl font-semibold md:font-bold mt-4 md:mt-5">
           {report.title}
         </h2>
 
-        <p className="mt-3 text-awaaz-muted line-clamp-2">
+        <p className="mt-2 md:mt-3 text-sm md:text-base text-awaaz-muted line-clamp-2">
           {report.description}
         </p>
 
-        <div className="flex items-center gap-2 mt-4 text-awaaz-muted">
-          <MapPin size={18} />
+        <div className="flex items-center gap-2 mt-4 text-xs md:text-sm text-awaaz-muted">
+          <MapPin size={16} className="md:w-[18px] md:h-[18px]" />
           <span>{location}</span>
         </div>
 
-        <div className="flex items-center gap-2 mt-2 text-awaaz-muted">
-          <Clock3 size={18} />
+        <div className="flex items-center gap-2 mt-2 text-xs md:text-sm text-awaaz-muted">
+          <Clock3 size={16} className="md:w-[18px] md:h-[18px]" />
           <span>{createdAt}</span>
         </div>
 
-        <div className="flex items-center gap-2 mt-2 text-awaaz-muted">
-          <TriangleAlert size={18} />
+        <div className="flex items-center gap-2 mt-2 text-xs md:text-sm text-awaaz-muted">
+          <TriangleAlert size={16} className="md:w-[18px] md:h-[18px]" />
           <span>
             {report.assignedDepartment || "Not Assigned"}
           </span>

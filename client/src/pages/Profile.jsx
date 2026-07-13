@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/clerk-react";
 
 import useProfile from "../hooks/useProfile";
+import Loading from "../components/common/Loading";
 
 import {
   User,
@@ -21,13 +22,7 @@ export default function Profile() {
   } = useProfile(user?.id);
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-[70vh]">
-        <h2 className="text-2xl font-semibold">
-          Loading Profile...
-        </h2>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

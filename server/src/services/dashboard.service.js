@@ -22,11 +22,36 @@ export const getDashboardStatsService = async () => {
     severity: "High",
   });
 
+  const avgRes = await Report.aggregate([
+    {
+      $match: {
+        status: "Resolved",
+        resolvedAt: { $exists: true, $ne: null },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        avgTime: {
+          $avg: {
+            $subtract: ["$resolvedAt", "$createdAt"],
+          },
+        },
+      },
+    },
+  ]);
+
+  const avgResolutionTime =
+    avgRes.length > 0
+      ? Math.round(avgRes[0].avgTime / (1000 * 60 * 60))
+      : 0;
+
   return {
     totalReports,
     pending,
     resolved,
     critical,
+    avgResolutionTime,
   };
 };
 

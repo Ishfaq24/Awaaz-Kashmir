@@ -3,11 +3,26 @@ import {
   TriangleAlert,
   CircleCheckBig,
   Clock3,
+  Loader2,
 } from "lucide-react";
 
 import StatCard from "../components/dashboard/StatCard";
+import useDashboard from "../hooks/useDashboard";
+import Loading from "../components/common/Loading";
 
 export default function Analytics() {
+  const { stats, categories, performance } = useDashboard();
+
+  if (stats.isLoading || categories.isLoading || performance.isLoading) {
+    return <Loading />;
+  }
+
+  const s = stats.data;
+  const cats = categories.data || [];
+  const perfs = performance.data || [];
+
+  const totalCatCount = cats.reduce((acc, c) => acc + c.count, 0);
+
   return (
     <div className="space-y-8">
 
@@ -27,28 +42,28 @@ export default function Analytics() {
 
         <StatCard
           title="Total Reports"
-          value="1,284"
+          value={s?.totalReports?.toLocaleString() || 0}
           icon={TrendingUp}
           color="bg-blue-100 text-blue-600"
         />
 
         <StatCard
           title="Critical"
-          value="57"
+          value={s?.critical?.toLocaleString() || 0}
           icon={TriangleAlert}
           color="bg-red-100 text-red-600"
         />
 
         <StatCard
           title="Resolved"
-          value="881"
+          value={s?.resolved?.toLocaleString() || 0}
           icon={CircleCheckBig}
           color="bg-awaaz-background text-awaaz-secondary"
         />
 
         <StatCard
           title="Avg Resolution"
-          value="22h"
+          value={`${s?.avgResolutionTime || 0}h`}
           icon={Clock3}
           color="bg-yellow-100 text-yellow-600"
         />
@@ -65,11 +80,33 @@ export default function Analytics() {
 
           <div className="space-y-6">
 
-            <Progress title="Road Damage" value={85} color="bg-red-500" />
-            <Progress title="Garbage" value={60} color="bg-green-500" />
-            <Progress title="Water Supply" value={42} color="bg-blue-500" />
-            <Progress title="Electricity" value={31} color="bg-yellow-500" />
-            <Progress title="Drainage" value={18} color="bg-purple-500" />
+            {cats.map((c, i) => {
+              const colors = [
+                "bg-red-500",
+                "bg-green-500",
+                "bg-blue-500",
+                "bg-yellow-500",
+                "bg-purple-500",
+                "bg-indigo-500",
+                "bg-pink-500",
+                "bg-orange-500",
+              ];
+              const pct =
+                totalCatCount > 0
+                  ? Math.round((c.count / totalCatCount) * 100)
+                  : 0;
+              return (
+                <Progress
+                  key={c._id}
+                  title={c._id}
+                  value={pct}
+                  color={colors[i % colors.length]}
+                />
+              );
+            })}
+            {cats.length === 0 && (
+              <p className="text-awaaz-muted">No data available.</p>
+            )}
 
           </div>
 
@@ -83,25 +120,16 @@ export default function Analytics() {
 
           <div className="space-y-6">
 
-            <Department
-              name="Roads & Buildings"
-              resolved="82%"
-            />
-
-            <Department
-              name="Municipality"
-              resolved="91%"
-            />
-
-            <Department
-              name="PHE"
-              resolved="74%"
-            />
-
-            <Department
-              name="Electricity"
-              resolved="88%"
-            />
+            {perfs.map((p) => (
+              <Department
+                key={p.department}
+                name={p.department}
+                resolved={`${p.performance}%`}
+              />
+            ))}
+            {perfs.length === 0 && (
+              <p className="text-awaaz-muted">No data available.</p>
+            )}
 
           </div>
 
