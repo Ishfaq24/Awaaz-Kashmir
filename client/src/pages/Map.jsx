@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, LocateFixed } from "lucide-react";
+import { Search, LocateFixed, Flame } from "lucide-react";
 
 import api from "../lib/api";
 import Loading from "../components/common/Loading";
@@ -22,6 +22,7 @@ export default function Map() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] =
     useState("All");
+  const [showHeatmap, setShowHeatmap] = useState(true);
 
   const {
     data: reports = [],
@@ -68,10 +69,25 @@ export default function Map() {
           </p>
         </div>
 
-        <button className="bg-awaaz-secondary text-white rounded-2xl px-6 py-3 flex items-center justify-center gap-2 shrink-0">
-          <LocateFixed size={18} />
-          My Location
-        </button>
+        <div className="flex flex-wrap gap-3 shrink-0">
+          <button
+            type="button"
+            onClick={() => setShowHeatmap((value) => !value)}
+            className={`rounded-2xl px-6 py-3 flex items-center justify-center gap-2 border transition ${
+              showHeatmap
+                ? "bg-orange-500 text-white border-orange-500"
+                : "bg-awaaz-surface text-awaaz-muted border-awaaz-border"
+            }`}
+          >
+            <Flame size={18} />
+            {showHeatmap ? "Heatmap On" : "Heatmap Off"}
+          </button>
+
+          <button className="bg-awaaz-secondary text-white rounded-2xl px-6 py-3 flex items-center justify-center gap-2">
+            <LocateFixed size={18} />
+            My Location
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -113,7 +129,10 @@ export default function Map() {
                 <Loading fullScreen={false} />
               </div>
             ) : (
-              <MapView reports={filteredReports} />
+              <MapView
+                reports={filteredReports}
+                showHeatmap={showHeatmap}
+              />
             )}
 
             <div className="absolute inset-0 z-[1000] pointer-events-none overflow-hidden p-3 sm:p-4 flex flex-col justify-between gap-2 xl:block xl:p-0">

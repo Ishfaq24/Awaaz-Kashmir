@@ -15,11 +15,24 @@ import geminiRoutes from "./routes/test.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
+import aiRoutes from "./routes/ai.routes.js";
+import userRoutes from "./routes/user.routes.js";
 const app = express();
 
 app.use(
   cors({
-    origin: env.CLIENT_URL,
+    origin: (origin, callback) => {
+      if (
+        !origin ||
+        origin === env.CLIENT_URL ||
+        /^http:\/\/localhost:\d+$/.test(origin)
+      ) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   })
 );
@@ -54,6 +67,8 @@ app.use(
   "/api/admin",
   adminRoutes
 );
+app.use("/api/ai", aiRoutes);
+app.use("/api/users", userRoutes);
 
 
 app.use(notFound);

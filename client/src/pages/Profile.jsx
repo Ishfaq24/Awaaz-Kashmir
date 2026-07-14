@@ -19,11 +19,22 @@ export default function Profile() {
   const {
     data,
     isLoading,
+    isError,
   } = useProfile(user?.id);
 
   if (isLoading) {
     return <Loading />;
   }
+
+  const profile = data || {
+    role: "citizen",
+    trustScore: 50,
+    reports: 0,
+    resolved: 0,
+    level: 1,
+    badges: 0,
+    achievements: [],
+  };
 
   return (
     <div className="space-y-8">
@@ -58,17 +69,17 @@ export default function Profile() {
             </h1>
 
             <p className="text-awaaz-muted mt-2">
-              {data?.role || "Community Contributor"}
+              {profile.role || "Community Contributor"}
             </p>
 
             <div className="flex gap-3 mt-5 flex-wrap">
 
               <span className="px-4 py-2 rounded-full bg-awaaz-background text-awaaz-secondary font-medium">
-                Trust Score {data?.trustScore ?? 0}%
+                Trust Score {profile.trustScore ?? 0}%
               </span>
 
               <span className="px-4 py-2 rounded-full bg-awaaz-background text-awaaz-muted font-medium">
-                Level {data?.level ?? 1}
+                Level {profile.level ?? 1}
               </span>
 
             </div>
@@ -85,28 +96,28 @@ export default function Profile() {
 
         <ProfileCard
           title="Reports"
-          value={data?.reports ?? 0}
+          value={profile.reports ?? 0}
           icon={ClipboardList}
           color="bg-awaaz-background text-awaaz-secondary"
         />
 
         <ProfileCard
           title="Resolved"
-          value={data?.resolved ?? 0}
+          value={profile.resolved ?? 0}
           icon={CheckCircle2}
           color="bg-awaaz-background text-awaaz-secondary"
         />
 
         <ProfileCard
           title="Trust"
-          value={`${data?.trustScore ?? 0}%`}
+          value={`${profile.trustScore ?? 0}%`}
           icon={ShieldCheck}
           color="bg-awaaz-background text-awaaz-accent"
         />
 
         <ProfileCard
           title="Badges"
-          value={data?.badges ?? 0}
+          value={profile.badges ?? 0}
           icon={Trophy}
           color="bg-awaaz-background text-awaaz-muted"
         />
@@ -127,7 +138,9 @@ export default function Profile() {
 
           <div className="space-y-5">
 
-            {(data?.achievements || [
+            {(profile.achievements?.length && !isError
+              ? profile.achievements
+              : [
               {
                 title: "Top Reporter",
                 description: "Submitted verified reports.",

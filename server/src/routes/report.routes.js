@@ -32,6 +32,8 @@ router.post("/", createReport);
 
 router.get("/", getAllReports);
 
+router.get("/nearby/:id", getNearbyReports);
+
 router.get("/:id", getReportById);
 
 router.put("/:id", updateReport);
@@ -47,8 +49,6 @@ router.post("/:id/confirm", confirmReport);
 router.post("/:id/comments", addComment);
 
 router.get("/:id/comments", getComments);
-
-router.get("/nearby/:id", getNearbyReports);
 
 /*
 |--------------------------------------------------------------------------

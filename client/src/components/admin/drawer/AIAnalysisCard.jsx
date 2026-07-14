@@ -119,8 +119,9 @@ export default function AIAnalysisCard({
             </div>
 
             <p className="text-gray-700">
-              {report.assignedDepartment ||
-                "Public Works Department"}
+              {ai.department ||
+                report.assignedDepartment ||
+                "Municipal Corporation"}
             </p>
 
           </div>

@@ -1,16 +1,11 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/ApiResponse.js";
+import { getProfileService } from "../services/user.service.js";
 
-import { currentUser } from "../middleware/auth.middleware.js";
+export const getProfile = asyncHandler(async (req, res) => {
+  const profile = await getProfileService(req.params.clerkId);
 
-export const me = asyncHandler(async (req, res) => {
   return res.status(200).json(
-    new ApiResponse(
-      200,
-      {
-        clerkId: currentUser(req),
-      },
-      "Authenticated"
-    )
+    new ApiResponse(200, profile, "Profile fetched successfully")
   );
 });
