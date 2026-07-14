@@ -81,20 +81,20 @@ The platform automatically:
 
 Currently, citizens face massive hurdles when trying to report public grievances:
 
-- 📱 **WhatsApp Group Chaos:** Citizens post issues on random WhatsApp groups where they are ignored or drowned out by noise.
-- 🕳️ **Disappearing Complaints:** Complaints get lost in infinite chat histories with zero traceability.
-- 📉 **No Accountability:** Without a public ledger of issues, authorities face no pressure to act.
-- 📞 **Unrecorded Phone Calls:** Helplines ring endlessly or calls go unrecorded, leaving no proof of the complaint.
-- 🧩 **Incomplete Information:** Departments often receive vague complaints (e.g., "pipe broken") without exact location or severity context.
-- 🔁 **Duplicate Complaints:** Multiple people report the same pothole, wasting valuable administrative resources.
-- 🤥 **Fake Complaints:** Malicious actors post fake issues, reducing trust in citizen reporting.
-- 📊 **No Centralized Dashboard:** The government lacks a holistic, real-time view of the city's problems.
-- ❓ **Lack of Feedback Loop:** Citizens never know whether the issue they reported is being addressed or has been resolved.
-- 🚦 **Inability to Prioritize:** Governments cannot prioritize issues because there is no data on severity or public impact.
-- 📈 **Zero Analytics:** Lack of data prevents long-term planning and predictive maintenance.
-- 🗺️ **No Regional Heatmaps:** Authorities cannot visually identify which areas need the most intervention.
-- 👥 **No Public Transparency:** Citizens cannot see what the government is fixing in their neighborhood.
-- 🌾 **Rural Exclusion:** Rural citizens, who often lack access to digital literacy, struggle the most to navigate complex grievance portals.
+- **WhatsApp Group Chaos:** Citizens post issues on random WhatsApp groups where they are ignored or drowned out by noise.
+- **Disappearing Complaints:** Complaints get lost in infinite chat histories with zero traceability.
+- **No Accountability:** Without a public ledger of issues, authorities face no pressure to act.
+- **Unrecorded Phone Calls:** Helplines ring endlessly or calls go unrecorded, leaving no proof of the complaint.
+- **Incomplete Information:** Departments often receive vague complaints (e.g., "pipe broken") without exact location or severity context.
+- **Duplicate Complaints:** Multiple people report the same pothole, wasting valuable administrative resources.
+- **Fake Complaints:** Malicious actors post fake issues, reducing trust in citizen reporting.
+- **No Centralized Dashboard:** The government lacks a holistic, real-time view of the city's problems.
+- **Lack of Feedback Loop:** Citizens never know whether the issue they reported is being addressed or has been resolved.
+- **Inability to Prioritize:** Governments cannot prioritize issues because there is no data on severity or public impact.
+- **Zero Analytics:** Lack of data prevents long-term planning and predictive maintenance.
+- **No Regional Heatmaps:** Authorities cannot visually identify which areas need the most intervention.
+- **No Public Transparency:** Citizens cannot see what the government is fixing in their neighborhood.
+- **Rural Exclusion:** Rural citizens, who often lack access to digital literacy, struggle the most to navigate complex grievance portals.
 
 ---
 
@@ -126,26 +126,26 @@ Awaaz AI solves every one of these problems by centralizing, automating, and ver
 
 ## ✨ Key Features
 
-- 🤖 **AI Issue Detection:** Upload a photo, and our AI automatically recognizes the problem (e.g., broken pipe, pothole, fallen tree).
-- 📸 **Image Upload:** Seamless, optimized image capture directly from the mobile browser or gallery.
-- ✍️ **AI Generated Complaint:** Automatically drafts a professional, detailed complaint description based on the image.
-- 🚨 **AI Severity Analysis:** Predicts the impact level, helping authorities prioritize critical infrastructure failures.
-- 🏢 **Department Prediction:** AI routes the issue directly to PDD, PHE, R&B, SMC, etc., avoiding administrative ping-pong.
-- 📍 **GPS Location Detection:** Auto-captures precise coordinates when the photo is taken.
-- 🗺️ **Interactive Map:** A public, live Leaflet map showing all reported issues in the region with colored status pins.
-- 🤝 **Nearby Citizen Verification:** Geofenced alerts notify nearby users to verify the issue, preventing spam.
-- ⏱️ **Live Status Tracking:** Track your issue through stages: *Reported ➔ Verified ➔ Assigned ➔ In Progress ➔ Resolved*.
-- 🔔 **Smart Notifications:** Real-time updates via email/push notifications whenever an issue's status changes.
-- 🌡️ **Heatmaps:** Visual density maps showing the most affected regions, helping policymakers allocate budgets.
-- 📈 **Analytics Dashboard:** Deep insights into resolution times, common issues, and department performance.
-- 👨‍💼 **Department Dashboard:** Specialized views for department heads to manage their specific assigned tasks.
-- 👤 **User Dashboard:** A personal timeline of all issues reported and verified by the citizen.
-- 👑 **Admin Dashboard:** God-view for Super Admins to oversee the entire system, manage roles, and monitor health.
-- 👯 **Duplicate Detection:** AI checks for similar images and coordinates to merge duplicate reports.
-- 📅 **Report Timeline:** A transparent chronological ledger of every action taken on an issue.
-- 🛡️ **Community Verification:** Crowdsourced moderation ensures high data quality.
-- 🔐 **Role Based Authentication:** Secure JWT-based access for Citizens, Authorities, and Admins.
-- 📱 **Mobile Friendly UI:** Designed mobile-first, ensuring it works perfectly on every smartphone.
+- **AI Issue Detection:** Upload a photo, and our AI automatically recognizes the problem (e.g., broken pipe, pothole, fallen tree).
+- **Image Upload:** Seamless, optimized image capture directly from the mobile browser or gallery.
+- **AI Generated Complaint:** Automatically drafts a professional, detailed complaint description based on the image.
+- **AI Severity Analysis:** Predicts the impact level, helping authorities prioritize critical infrastructure failures.
+- **Department Prediction:** AI routes the issue directly to PDD, PHE, R&B, SMC, etc., avoiding administrative ping-pong.
+- **GPS Location Detection:** Auto-captures precise coordinates when the photo is taken.
+- **Interactive Map:** A public, live Leaflet map showing all reported issues in the region with colored status pins.
+- **Nearby Citizen Verification:** Geofenced alerts notify nearby users to verify the issue, preventing spam.
+- **Live Status Tracking:** Track your issue through stages: *Reported ➔ Verified ➔ Assigned ➔ In Progress ➔ Resolved*.
+- **Smart Notifications:** Real-time updates via email/push notifications whenever an issue's status changes.
+- **Heatmaps:** Visual density maps showing the most affected regions, helping policymakers allocate budgets.
+- **Analytics Dashboard:** Deep insights into resolution times, common issues, and department performance.
+- **Department Dashboard:** Specialized views for department heads to manage their specific assigned tasks.
+- **User Dashboard:** A personal timeline of all issues reported and verified by the citizen.
+- **Admin Dashboard:** God-view for Super Admins to oversee the entire system, manage roles, and monitor health.
+- **Duplicate Detection:** AI checks for similar images and coordinates to merge duplicate reports.
+- **Report Timeline:** A transparent chronological ledger of every action taken on an issue.
+- **Community Verification:** Crowdsourced moderation ensures high data quality.
+- **Role Based Authentication:** Secure JWT-based access for Citizens, Authorities, and Admins.
+- **Mobile Friendly UI:** Designed mobile-first, ensuring it works perfectly on every smartphone.
 
 ---
 
@@ -252,13 +252,13 @@ flowchart LR
 
 Awaaz AI leverages **Google Gemini** as its core intelligence engine.
 
-- 🖼️ **Image Understanding:** Analyzes uploaded photos to determine the exact nature of the civic issue.
-- 🔥 **Severity Detection:** Classifies the issue as `Low`, `Medium`, `High`, or `Critical` based on visual cues (e.g., a massive sinkhole vs. a small pothole).
-- 🏷️ **Issue Classification:** Categorizes the problem into predefined groups (e.g., Water, Electricity, Roads, Sanitation).
-- 📝 **Complaint Generation:** Drafts a formal, polite, and detailed complaint text automatically, removing the burden from the citizen.
-- 🏢 **Department Recommendation:** Intelligently maps the issue category to the specific local government department responsible for fixing it.
-- 👯 **Duplicate Detection (Upcoming):** Vector embeddings of images and text to flag if an issue has already been reported nearby.
-- 🔮 **Future AI Possibilities:** Predictive maintenance models to foresee infrastructure failures before they happen based on historical reporting data.
+- **Image Understanding:** Analyzes uploaded photos to determine the exact nature of the civic issue.
+- **Severity Detection:** Classifies the issue as `Low`, `Medium`, `High`, or `Critical` based on visual cues (e.g., a massive sinkhole vs. a small pothole).
+- **Issue Classification:** Categorizes the problem into predefined groups (e.g., Water, Electricity, Roads, Sanitation).
+- **Complaint Generation:** Drafts a formal, polite, and detailed complaint text automatically, removing the burden from the citizen.
+- **Department Recommendation:** Intelligently maps the issue category to the specific local government department responsible for fixing it.
+- **Duplicate Detection (Upcoming):** Vector embeddings of images and text to flag if an issue has already been reported nearby.
+- **Future AI Possibilities:** Predictive maintenance models to foresee infrastructure failures before they happen based on historical reporting data.
 
 ---
 
@@ -438,13 +438,13 @@ We use MongoDB with Mongoose. Core collections include:
 ## 🛡️ Security
 
 Security is built into the core of Awaaz AI:
-- 🔐 **JWT Authentication:** Secure token-based auth for all API requests.
-- 🔑 **Password Hashing:** Passwords are never stored in plain text; bcrypt is used for hashing.
-- 🚧 **Role Based Access:** Strict backend middleware prevents Citizens from accessing Admin or Department routes.
-- 🧹 **Input Validation:** Express-validator ensures data integrity and prevents NoSQL injection.
-- 🛡️ **Protected Routes:** Frontend and Backend routes are guarded against unauthorized access.
-- ⏱️ **Rate Limiting:** Prevents API abuse and DDoS attacks.
-- 📁 **Secure File Upload:** Multer and Cloudinary integration ensures only safe image formats are processed.
+- **JWT Authentication:** Secure token-based auth for all API requests.
+- **Password Hashing:** Passwords are never stored in plain text; bcrypt is used for hashing.
+- **Role Based Access:** Strict backend middleware prevents Citizens from accessing Admin or Department routes.
+- **Input Validation:** Express-validator ensures data integrity and prevents NoSQL injection.
+- **Protected Routes:** Frontend and Backend routes are guarded against unauthorized access.
+- **Rate Limiting:** Prevents API abuse and DDoS attacks.
+- **Secure File Upload:** Multer and Cloudinary integration ensures only safe image formats are processed.
 
 ---
 
@@ -463,14 +463,14 @@ Awaaz AI is designed to scale from a single municipality to an entire state or c
 
 ## 🚀 Future Roadmap
 
-- 🎙️ **Voice Reporting:** Allow citizens to describe the issue using their voice in regional languages; AI will transcribe and translate it.
-- 📶 **Offline Reporting:** Progressive Web App (PWA) support to capture issues offline and sync when an internet connection is found.
-- 🗣️ **Regional Languages:** Multilingual interface (Kashmiri, Urdu, Hindi) to maximize accessibility.
-- 📹 **Video Complaints:** Support for short video uploads for complex issues.
-- 🚁 **Drone Monitoring:** API endpoints to ingest reports from autonomous city-monitoring drones.
-- 🌡️ **IoT Sensors:** Integration with smart city sensors (e.g., automated reporting when a sewer level is critical).
-- 🔮 **Predictive Maintenance:** AI models to predict when infrastructure will fail before it actually breaks.
-- 🆘 **Emergency SOS:** Direct hotline routing for life-threatening civic failures.
+- **Voice Reporting:** Allow citizens to describe the issue using their voice in regional languages; AI will transcribe and translate it.
+- **Offline Reporting:** Progressive Web App (PWA) support to capture issues offline and sync when an internet connection is found.
+- **Regional Languages:** Multilingual interface (Kashmiri, Urdu, Hindi) to maximize accessibility.
+- **Video Complaints:** Support for short video uploads for complex issues.
+- **Drone Monitoring:** API endpoints to ingest reports from autonomous city-monitoring drones.
+- **IoT Sensors:** Integration with smart city sensors (e.g., automated reporting when a sewer level is critical).
+- **Predictive Maintenance:** AI models to predict when infrastructure will fail before it actually breaks.
+- **Emergency SOS:** Direct hotline routing for life-threatening civic failures.
 
 ---
 
@@ -478,13 +478,13 @@ Awaaz AI is designed to scale from a single municipality to an entire state or c
 
 Awaaz AI transforms society by benefiting multiple stakeholders:
 
-- 👨‍👩‍👧‍👦 **Citizens:** Given a powerful, frictionless voice to improve their living conditions.
-- 🏛️ **Government:** Receives structured, prioritized, and verified data, saving thousands of hours of manual sorting.
-- 🏗️ **Municipal Departments:** Can allocate budgets efficiently based on AI-generated heatmaps and severity metrics.
-- 🤝 **NGOs:** Can use public data to focus their community interventions.
-- 🔬 **Researchers:** Access anonymized civic data to study urban development.
-- 📰 **Media:** Transparent dashboards ensure the press can hold authorities accountable accurately.
-- 🌳 **Environment:** Faster resolution of water leaks and waste accumulation directly protects the local ecosystem.
+- **Citizens:** Given a powerful, frictionless voice to improve their living conditions.
+- **Government:** Receives structured, prioritized, and verified data, saving thousands of hours of manual sorting.
+- **Municipal Departments:** Can allocate budgets efficiently based on AI-generated heatmaps and severity metrics.
+- **NGOs:** Can use public data to focus their community interventions.
+- **Researchers:** Access anonymized civic data to study urban development.
+- **Media:** Transparent dashboards ensure the press can hold authorities accountable accurately.
+- **Environment:** Faster resolution of water leaks and waste accumulation directly protects the local ecosystem.
 
 ---
 
@@ -502,13 +502,13 @@ Currently, the gap between the citizen experiencing the problem and the official
 
 Awaaz AI is the perfect hackathon project because it represents the convergence of cutting-edge technology and profound social impact:
 
-- 🎯 **Solves a Real Problem:** Not just a toy app; it addresses a universal, daily frustration.
-- 🧠 **Meaningful AI Integration:** AI isn't a gimmick here; it fundamentally replaces manual data entry and triage.
-- ❤️ **Massive Social Impact:** Has the potential to improve the lives of millions.
-- 📐 **Highly Scalable:** The architecture is production-ready.
-- 🎨 **Beautiful UI:** Premium, modern aesthetics ensure a delightful user experience.
-- 💡 **Innovation:** Combining LLMs (Gemini) with geographic data and civic administration.
-- 🔍 **Transparency:** Open-source civic tech at its best.
+- **Solves a Real Problem:** Not just a toy app; it addresses a universal, daily frustration.
+- **Meaningful AI Integration:** AI isn't a gimmick here; it fundamentally replaces manual data entry and triage.
+- **Massive Social Impact:** Has the potential to improve the lives of millions.
+- **Highly Scalable:** The architecture is production-ready.
+- **Beautiful UI:** Premium, modern aesthetics ensure a delightful user experience.
+- **Innovation:** Combining LLMs (Gemini) with geographic data and civic administration.
+- **Transparency:** Open-source civic tech at its best.
 
 ---
 
