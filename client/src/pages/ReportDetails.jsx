@@ -5,6 +5,8 @@ import {
   Building2,
   TriangleAlert,
   User,
+  Brain,
+  Sparkles,
 } from "lucide-react";
 import MiniMap from "../components/map/MiniMap";
 import NearbyReports from "../components/report/NearbyReports";
@@ -243,24 +245,73 @@ export default function ReportDetails() {
           {/* AI */}
 
           <div className="bg-awaaz-surface rounded-3xl border border-awaaz-border p-4 md:p-8">
-            <h2 className="text-xl md:text-2xl font-semibold md:font-bold mb-4 md:mb-6">AI Analysis</h2>
-
-            <div className="space-y-4">
-              <p>
-                <strong>Confidence:</strong>{" "}
-                {report.aiAnalysis?.confidence ?? "N/A"}
-              </p>
-
-              <p>
-                <strong>Generated Title:</strong>{" "}
-                {report.aiAnalysis?.title || report.title}
-              </p>
-
-              <p>
-                <strong>Description:</strong>{" "}
-                {report.aiAnalysis?.description || report.description}
-              </p>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 rounded-xl bg-awaaz-background flex items-center justify-center">
+                <Brain className="text-awaaz-secondary" />
+              </div>
+              <div>
+                <h2 className="text-xl md:text-2xl font-semibold md:font-bold">
+                  AI Analysis
+                </h2>
+                <p className="text-sm text-awaaz-muted">
+                  Powered by NVIDIA Vision AI
+                </p>
+              </div>
             </div>
+
+            {report.aiAnalysis?.confidence ? (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="text-awaaz-secondary" size={18} />
+                    <span className="font-medium">AI Confidence</span>
+                  </div>
+                  <span className="font-bold text-awaaz-secondary">
+                    {report.aiAnalysis.confidence}%
+                  </span>
+                </div>
+
+                <div className="h-3 rounded-full bg-awaaz-border overflow-hidden">
+                  <div
+                    className="h-full bg-awaaz-secondary rounded-full"
+                    style={{ width: `${report.aiAnalysis.confidence}%` }}
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="rounded-2xl bg-awaaz-background p-4">
+                    <p className="text-sm text-awaaz-muted">Category</p>
+                    <p className="font-semibold mt-1">
+                      {report.aiAnalysis.category || report.category}
+                    </p>
+                  </div>
+                  <div className="rounded-2xl bg-awaaz-background p-4">
+                    <p className="text-sm text-awaaz-muted">Suggested Department</p>
+                    <p className="font-semibold mt-1">
+                      {report.aiAnalysis.department || report.assignedDepartment || "Pending"}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-sm text-awaaz-muted mb-2">AI Generated Title</p>
+                  <p className="font-semibold">
+                    {report.aiAnalysis.title || report.title}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-awaaz-muted mb-2">AI Summary</p>
+                  <p className="text-awaaz-muted leading-7">
+                    {report.aiAnalysis.description || report.description}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-awaaz-muted">
+                No AI analysis available for this report.
+              </p>
+            )}
           </div>
 <MiniMap report={report} />
           {/* Timeline */}

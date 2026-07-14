@@ -5,7 +5,6 @@ import ImageUploader from "../components/report/ImageUploader";
 import ReportForm from "../components/report/ReportForm";
 import TipsCard from "../components/report/TipsCard";
 import AnalyzeButton from "../components/report/AnalyzeButton";
-import UploadProgress from "../components/report/UploadProgress";
 import { reverseGeocode } from "../utils/geocode";
 
 export default function UploadIssue() {
@@ -20,10 +19,6 @@ export default function UploadIssue() {
     longitude: null,
     address: "",
   });
-
-  const [uploading, setUploading] = useState(false);
-
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     if (!navigator.geolocation) return;
@@ -63,11 +58,6 @@ export default function UploadIssue() {
         </div>
 
         <div className="space-y-6">
-          <UploadProgress
-            uploading={uploading}
-            progress={progress}
-          />
-
           <TipsCard />
         </div>
       </div>
@@ -82,14 +72,13 @@ export default function UploadIssue() {
         setLocation={setLocation}
       />
         <div className="mt-10">
-<AnalyzeButton
-  image={image}
-  title={title}
-  description={description}
-  location={location}
-  setUploading={setUploading}
-  setProgress={setProgress}
-/>
+          <AnalyzeButton
+            image={image}
+            preview={preview}
+            title={title}
+            description={description}
+            location={location}
+          />
         </div>
       </div>
     </div>

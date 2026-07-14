@@ -96,51 +96,60 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
 
-      {/* Logo */}
+      {/* Brand header */}
+      <div className="px-5 py-5 border-b border-white/10">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div
+              className={`relative shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg ${
+                isAdmin
+                  ? "bg-gradient-to-br from-red-500 to-red-700 shadow-red-900/30"
+                  : "bg-gradient-to-br from-awaaz-secondary to-[#e85d1a] shadow-awaaz-secondary/25"
+              }`}
+            >
+              <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20" />
+              {isAdmin ? (
+                <Shield size={22} className="text-white relative z-10" strokeWidth={2.25} />
+              ) : (
+                <span className="relative z-10 font-extrabold text-xl text-white tracking-tight">
+                  A
+                </span>
+              )}
+            </div>
 
-      <div className="h-24 flex items-center justify-between px-8 border-b border-white/10">
-        <div className="flex items-center">
-          <div
-            className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white ${
-            isAdmin
-              ? "bg-red-600"
-              : "bg-awaaz-secondary"
-          }`}
-        >
-          {isAdmin ? (
-            <Shield size={24} />
-          ) : (
-            <span className="font-bold text-xl">
-              A
-            </span>
-          )}
+            <div className="min-w-0">
+              {isAdmin ? (
+                <>
+                  <h2 className="text-[15px] font-bold leading-tight text-white tracking-tight">
+                    Authority Portal
+                  </h2>
+                  <span className="inline-flex items-center mt-1.5 px-2 py-0.5 rounded-md bg-red-500/15 text-red-200 text-[10px] font-semibold uppercase tracking-wider ring-1 ring-red-400/20">
+                    Super Administrator
+                  </span>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-[15px] font-bold leading-[1.15] text-white tracking-tight">
+                    <span className="block">Awaaz</span>
+                    <span className="block text-awaaz-accent">Kashmir</span>
+                  </h2>
+                  <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/45">
+                    AI Civic Platform
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="lg:hidden shrink-0 p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+            onClick={() => setIsOpen && setIsOpen(false)}
+            aria-label="Close sidebar"
+          >
+            <X size={20} />
+          </button>
         </div>
-
-        <div className="ml-4">
-
-          <h2 className="text-xl font-bold">
-            {isAdmin
-              ? "Authority Portal"
-              : "Awaaz Kashmir"}
-          </h2>
-
-          <p className="text-sm text-white/70">
-            {isAdmin
-              ? "Super Administrator"
-              : "AI Civic Platform"}
-          </p>
-
-        </div>
-        </div>
-
-        {/* Mobile Close Button */}
-        <button 
-          className="lg:hidden text-white/70 hover:text-white"
-          onClick={() => setIsOpen && setIsOpen(false)}
-        >
-          <X size={24} />
-        </button>
-
       </div>
 
       {/* Navigation */}

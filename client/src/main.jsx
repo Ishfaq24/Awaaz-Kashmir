@@ -14,6 +14,7 @@ import {
 } from "@tanstack/react-query";
 
 import AppRoutes from "./routes/AppRoutes";
+import SyncUserProvider from "./components/auth/SyncUserProvider";
 
 const clerkPubKey =
   import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -33,8 +34,9 @@ ReactDOM.createRoot(
   <React.StrictMode>
     <ClerkProvider publishableKey={clerkPubKey}>
       <QueryClientProvider client={queryClient}>
-
-        <AppRoutes />
+        <SyncUserProvider>
+          <AppRoutes />
+        </SyncUserProvider>
 
         <Toaster
           position="top-right"

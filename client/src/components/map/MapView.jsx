@@ -7,6 +7,8 @@ import {
 import { Link } from "react-router-dom";
 import L from "leaflet";
 
+import HeatMapLayer from "./HeatMap";
+
 const getMarkerColor = (severity) => {
   switch (severity) {
     case "High":
@@ -18,7 +20,7 @@ const getMarkerColor = (severity) => {
   }
 };
 
-export default function MapView({ reports = [] }) {
+export default function MapView({ reports = [], showHeatmap = false }) {
   return (
     <MapContainer
       center={[34.0837, 74.7973]}
@@ -30,6 +32,8 @@ export default function MapView({ reports = [] }) {
         attribution="&copy; OpenStreetMap contributors"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+
+      {showHeatmap && <HeatMapLayer reports={reports} />}
 
       {reports.map((report) => {
         const lat = report.location?.coordinates?.lat;
