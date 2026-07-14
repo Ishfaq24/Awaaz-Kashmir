@@ -167,9 +167,7 @@ export default function LandingPage() {
             </h1>
 
             <p className="text-[#5B4636] mt-8 text-lg leading-8 max-w-md">
-              Report civic issues from your mohalla, get them verified by
-              neighbours who see the same street, and track them until the
-              authorities act — from Lal Chowk to Sopore.
+              From your mohalla to the authorities—report local issues, get them verified by your neighbours, and follow every update until they're resolved, across Kashmir.
             </p>
 
             <div className="flex gap-5 mt-10">
@@ -237,10 +235,10 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 pb-6 text-[#5B4636]/70 text-sm">
-          <Leaf size={14} />
-          <span>Built for every mohalla, from Srinagar to Kupwara.</span>
-        </div>
+        <div className="flex items-center justify-center gap-2 pb-6 text-[#5B4636]/70 text-sm text-center w-full">
+  <Leaf size={14} />
+  <span>Built for every Mohalla</span>
+</div>
       </div>
     </div>
   );
