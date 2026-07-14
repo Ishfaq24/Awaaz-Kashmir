@@ -524,9 +524,7 @@ Awaaz AI is the perfect hackathon project because it represents the convergence 
 
 ## 🎥 Demo
 
-- 🌐 **Live Demo:** [awaaz-kashmir.vercel.app](#) *(Placeholder)*
-- 📺 **Video Walkthrough:** [YouTube Link](#) *(Placeholder)*
-- 📑 **Pitch Deck:** [Google Slides](#) *(Placeholder)*
+- 🌐 **Live Demo:** [awaaz-kashmir.vercel.app](#) (https://awaaz-kashmir-o7sy.vercel.app/)
 
 ---
 
