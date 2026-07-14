@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="/image.png" alt="Awaaz AI Logo" width="150"/>
+  <img src="/logo.png" alt="Awaaz AI Logo" width="150"/>
 
   # Awaaz AI (Awaaz Kashmir)
   **"Your Voice. Verified. Solved."**
@@ -513,15 +513,13 @@ Awaaz AI is the perfect hackathon project because it represents the convergence 
 ---
 
 ## 📸 Screenshots
-
 | Landing Page | Interactive Map |
 | :---: | :---: |
-| <img src="https://via.placeholder.com/600x400.png?text=Landing+Page+UI" alt="Landing Page" width="400"/> | <img src="https://via.placeholder.com/600x400.png?text=Interactive+Map+UI" alt="Map View" width="400"/> |
+| <img src="./landingPage.png" alt="Landing Page" width="400"/> | <img src="./map.png" alt="Interactive Map" width="400"/> |
 
 | AI Analysis View | Department Dashboard |
 | :---: | :---: |
-| <img src="https://via.placeholder.com/600x400.png?text=AI+Issue+Detection" alt="AI Analysis" width="400"/> | <img src="https://via.placeholder.com/600x400.png?text=Department+Kanban+Board" alt="Admin Dashboard" width="400"/> |
-
+| <img src="./aiAnalysis.png" alt="AI Analysis" width="400"/> | <img src="./adminDashboard.png" alt="Department Dashboard" width="400"/> |
 ---
 
 ## 🎥 Demo
@@ -534,11 +532,35 @@ Awaaz AI is the perfect hackathon project because it represents the convergence 
 
 ## 👨‍💻 Team
 
-| <img src="https://via.placeholder.com/100x100.png?text=Hacker+1" width="100" style="border-radius:50%"/> | <img src="https://via.placeholder.com/100x100.png?text=Hacker+2" width="100" style="border-radius:50%"/> | <img src="https://via.placeholder.com/100x100.png?text=Hacker+3" width="100" style="border-radius:50%"/> |
-| :---: | :---: | :---: |
-| **Hacker One** | **Hacker Two** | **Hacker Three** |
-| Frontend Lead | AI & Backend | DevOps & Database |
-| [GitHub](#) | [GitHub](#) | [GitHub](#) |
+<table align="center">
+<tr>
+<td align="center" width="50%">
+
+<img src="https://github.com/ishfaq24.png" width="140px" style="border-radius:50%;" alt="Ishfaq Ahmad Bhat"/>
+
+### **Ishfaq Ahmad Bhat**
+
+**Full Stack Developer & AI Integration**
+
+[![GitHub](https://img.shields.io/badge/GitHub-ishfaq24-181717?style=for-the-badge\&logo=github)](https://github.com/ishfaq24)
+
+</td>
+
+<td align="center" width="50%">
+
+<img src="https://github.com/FalakJan01.png" width="140px" style="border-radius:50%;" alt="Falak Jan"/>
+
+### **Falak Jan**
+
+**Full Stack Developer & Frontend**
+
+[![GitHub](https://img.shields.io/badge/GitHub-FalakJan01-181717?style=for-the-badge\&logo=github)](https://github.com/FalakJan01)
+
+</td>
+</tr>
+</table>
+
+> 🚀 Built with passion during **OpenHack 2026** to empower citizens through **Awaaz AI – Your Voice. Verified. Solved.**
 
 ---
 
