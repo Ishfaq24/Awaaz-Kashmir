@@ -34,7 +34,7 @@ const citizenLinks = [
     icon: Map,
   },
   {
-    title: "My Reports",
+    title: "Reports",
     path: "/reports",
     icon: ClipboardList,
   },

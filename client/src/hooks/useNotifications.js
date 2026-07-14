@@ -11,7 +11,7 @@ export default function useNotifications(clerkId, role = "citizen") {
 
   useEffect(() => {
     if (!socket) {
-      socket = io("http://localhost:5000");
+      socket = io(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000");
     }
 
     const handleNotification = (newNotification) => {
