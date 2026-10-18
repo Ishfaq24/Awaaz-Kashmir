@@ -3,7 +3,6 @@ import {
   TriangleAlert,
   CircleCheckBig,
   Clock3,
-  Loader2,
 } from "lucide-react";
 
 import StatCard from "../components/dashboard/StatCard";

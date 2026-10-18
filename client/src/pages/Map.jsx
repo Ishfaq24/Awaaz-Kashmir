@@ -14,7 +14,7 @@ import FloatingStats from "../components/map/FloatingStats";
 import FloatingReportButton from "../components/map/FloatingReportButton";
 
 const fetchReports = async () => {
-  const { data } = await api.get("/reports");
+  const { data } = await api.get("/reports?limit=100");
   return data.data.reports;
 };
 
@@ -23,6 +23,27 @@ export default function Map() {
   const [selectedCategory, setSelectedCategory] =
     useState("All");
   const [showHeatmap, setShowHeatmap] = useState(true);
+  const [userLocation, setUserLocation] = useState(null);
+  const [isLocating, setIsLocating] = useState(false);
+
+  const handleMyLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation([pos.coords.latitude, pos.coords.longitude]);
+        setIsLocating(false);
+      },
+      () => {
+        setIsLocating(false);
+        alert("Unable to retrieve your location. Please check browser location permissions.");
+      },
+      { timeout: 10000 }
+    );
+  };
 
   const {
     data: reports = [],
@@ -83,9 +104,14 @@ export default function Map() {
             {showHeatmap ? "Heatmap On" : "Heatmap Off"}
           </button>
 
-          <button className="bg-awaaz-secondary text-white rounded-2xl px-6 py-3 flex items-center justify-center gap-2">
-            <LocateFixed size={18} />
-            My Location
+          <button
+            type="button"
+            onClick={handleMyLocation}
+            disabled={isLocating}
+            className="bg-awaaz-secondary hover:opacity-90 disabled:opacity-70 text-white rounded-2xl px-6 py-3 flex items-center justify-center gap-2 transition"
+          >
+            <LocateFixed size={18} className={isLocating ? "animate-spin" : ""} />
+            {isLocating ? "Locating..." : "My Location"}
           </button>
         </div>
       </div>
@@ -132,6 +158,7 @@ export default function Map() {
               <MapView
                 reports={filteredReports}
                 showHeatmap={showHeatmap}
+                userLocation={userLocation}
               />
             )}
 

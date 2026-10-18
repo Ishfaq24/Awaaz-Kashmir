@@ -1,13 +1,39 @@
+import { useEffect } from "react";
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
+  useMap,
 } from "react-leaflet";
 import { Link } from "react-router-dom";
 import L from "leaflet";
 
 import HeatMapLayer from "./HeatMap";
+
+function MapCenterHandler({ center }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center && center[0] && center[1]) {
+      map.setView(center, 13, { animate: true });
+    }
+  }, [center, map]);
+  return null;
+}
+
+const userLocationIcon = L.divIcon({
+  className: "",
+  html: `
+    <div style="
+      width: 20px;
+      height: 20px;
+      background: #3b82f6;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.7);
+    "></div>
+  `,
+});
 
 const getMarkerColor = (severity) => {
   switch (severity) {
@@ -20,7 +46,7 @@ const getMarkerColor = (severity) => {
   }
 };
 
-export default function MapView({ reports = [], showHeatmap = false }) {
+export default function MapView({ reports = [], showHeatmap = false, userLocation = null }) {
   return (
     <MapContainer
       center={[34.0837, 74.7973]}
@@ -32,6 +58,17 @@ export default function MapView({ reports = [], showHeatmap = false }) {
         attribution="&copy; OpenStreetMap contributors"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+
+      {userLocation && (
+        <>
+          <MapCenterHandler center={userLocation} />
+          <Marker position={userLocation} icon={userLocationIcon}>
+            <Popup>
+              <div className="font-semibold text-sm">📍 Your Current Location</div>
+            </Popup>
+          </Marker>
+        </>
+      )}
 
       {showHeatmap && <HeatMapLayer reports={reports} />}
 

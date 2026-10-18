@@ -3,7 +3,6 @@ import {
   MapPin,
   Calendar,
   Building2,
-  TriangleAlert,
   User,
   Brain,
   Sparkles,
@@ -366,7 +365,7 @@ export default function ReportDetails() {
                 ))
               )}
             </div>
-<NearbyReports reportId={report._id} />
+
             <div className="mt-8 space-y-4">
               <textarea
                 rows={4}
@@ -400,6 +399,8 @@ export default function ReportDetails() {
               </button>
             </div>
           </div>
+
+          <NearbyReports reportId={report._id} />
         </div>
       </div>
     </div>

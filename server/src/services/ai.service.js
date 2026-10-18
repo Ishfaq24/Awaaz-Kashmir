@@ -1,4 +1,6 @@
 import nvidiaClient from "../config/nvidia.js";
+import geminiClient from "../config/gemini.js";
+import env from "../config/env.js";
 
 const VALID_CATEGORIES = [
   "Road",
@@ -192,12 +194,54 @@ export const analyzeImage = async (file, userDescription = "") => {
   };
 };
 
-export const analyzeImageWithFallback = async (file, userDescription = "") => {
-  try {
-    return await analyzeImage(file, userDescription);
-  } catch (error) {
-    console.error("NVIDIA vision analysis failed:", error.message);
+export const analyzeImageWithGemini = async (file, userDescription = "") => {
+  const imagePart = {
+    inlineData: {
+      data: file.buffer.toString("base64"),
+      mimeType: file.mimetype || "image/jpeg",
+    },
+  };
 
-    return analyzeImageFallback(userDescription);
+  const promptText = userDescription
+    ? `${ANALYSIS_PROMPT}\n\nCitizen note: ${userDescription}`
+    : ANALYSIS_PROMPT;
+
+  const response = await geminiClient.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: [promptText, imagePart],
+  });
+
+  const text = response.text;
+
+  if (!text) {
+    throw new Error("Empty response from Gemini vision model");
   }
+
+  return {
+    ...parseAnalysisResponse(text),
+    source: "gemini",
+  };
+};
+
+export const analyzeImageWithFallback = async (file, userDescription = "") => {
+  // 1. Try Gemini Vision if GEMINI_API_KEY is configured
+  if (env.GEMINI_API_KEY) {
+    try {
+      return await analyzeImageWithGemini(file, userDescription);
+    } catch (geminiError) {
+      console.warn("Gemini vision analysis failed, trying fallback:", geminiError.message);
+    }
+  }
+
+  // 2. Try NVIDIA Vision if NVIDIA_API_KEY is configured
+  if (env.NVIDIA_API_KEY) {
+    try {
+      return await analyzeImage(file, userDescription);
+    } catch (nvidiaError) {
+      console.warn("NVIDIA vision analysis failed:", nvidiaError.message);
+    }
+  }
+
+  // 3. Fall back to heuristic rule-based classifier
+  return analyzeImageFallback(userDescription);
 };

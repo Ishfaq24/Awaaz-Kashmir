@@ -9,10 +9,13 @@ import {
   MicOff,
   Type
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
+import { useQueryClient } from "@tanstack/react-query";
 import useNearbyReports from "../../hooks/useNearbyReports";
 import Modal from "../common/Modal";
 import { reverseGeocode } from "../../utils/geocode";
+import { confirmReport } from "../../api/report";
 
 export default function ReportForm({
   title,
@@ -23,12 +26,34 @@ export default function ReportForm({
   setLocation,
   reportId
 }) {
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [confirmingId, setConfirmingId] = useState(null);
   const [alertMessage, setAlertMessage] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [language, setLanguage] = useState("en-IN");
 
   const { data: duplicates = [] } =
   useNearbyReports(reportId);
+
+  const handleConfirmDuplicate = async (duplicateId) => {
+    try {
+      setConfirmingId(duplicateId);
+      const confirmedReport = await confirmReport(duplicateId, user?.id);
+      await queryClient.invalidateQueries({ queryKey: ["dashboard-stats"] });
+      await queryClient.invalidateQueries({ queryKey: ["dashboard-recent"] });
+      await queryClient.invalidateQueries({ queryKey: ["reports"] });
+      navigate("/success", { state: { report: confirmedReport, isConfirmation: true } });
+    } catch (err) {
+      console.error(err);
+      setAlertMessage(
+        err.response?.data?.message || "Failed to confirm existing report."
+      );
+    } finally {
+      setConfirmingId(null);
+    }
+  };
 
   const refreshLocation = () => {
     if (!navigator.geolocation) {
@@ -165,8 +190,12 @@ export default function ReportForm({
 
                 <div className="flex gap-3">
 
-                  <button className="rounded-xl bg-green-600 text-white px-4 py-2">
-                    Confirm
+                  <button
+                    onClick={() => handleConfirmDuplicate(item._id)}
+                    disabled={confirmingId === item._id}
+                    className="rounded-xl bg-green-600 hover:bg-green-700 transition text-white px-4 py-2 disabled:opacity-50"
+                  >
+                    {confirmingId === item._id ? "Confirming..." : "Confirm"}
                   </button>
 
                   <Link

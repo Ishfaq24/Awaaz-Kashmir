@@ -17,6 +17,10 @@ export default {
           border: "#E8DDC8",
         },
       },
+      fontFamily: {
+        display: ["Fraunces", "serif"],
+        sans: ["Inter", "sans-serif"],
+      },
     },
   },
   plugins: [],

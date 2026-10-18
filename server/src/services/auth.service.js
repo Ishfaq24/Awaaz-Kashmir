@@ -5,7 +5,7 @@ export const syncUserService = async (clerkId) => {
   const clerkUser = await clerkClient.users.getUser(clerkId);
 
   const email =
-    clerkUser.emailAddresses[0]?.emailAddress || "";
+    clerkUser.emailAddresses[0]?.emailAddress || undefined;
 
   let user = await User.findOne({
     clerkId,

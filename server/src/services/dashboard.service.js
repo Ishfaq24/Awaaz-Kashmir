@@ -160,8 +160,7 @@ export const getPriorityQueueService = async () => {
     },
   })
     .sort({
-      severity: -1,
-      trustScore: -1,
+      priorityScore: -1,
       createdAt: -1,
     })
     .limit(10)
