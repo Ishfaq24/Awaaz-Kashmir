@@ -6,7 +6,6 @@ import LandingPage from "../pages/LandingPage";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 
-import Home from "../pages/Home";
 import UploadIssue from "../pages/UploadIssue";
 import AIProcessing from "../pages/AIProcessing";
 import AIResult from "../pages/AIResult";

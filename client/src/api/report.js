@@ -49,8 +49,10 @@ export const createReport = async (report) => {
 |--------------------------------------------------------------------------
 */
 
-export const getReports = async () => {
-  const response = await api.get("/reports");
+export const getReports = async (params = {}) => {
+  const response = await api.get("/reports", {
+    params: { limit: 50, ...params },
+  });
 
   return response.data.data.reports;
 };

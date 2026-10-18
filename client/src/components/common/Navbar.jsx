@@ -1,14 +1,10 @@
 import {
-  Bell,
   Search,
   CalendarDays,
-  Menu
+  Menu,
 } from "lucide-react";
-
-import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import {
   UserButton,
   useUser,
@@ -17,11 +13,15 @@ import {
 import NotificationDropdown from "../navbar/NotificationDropdown";
 
 export default function Navbar({ toggleSidebar }) {
-  
+  const navigate = useNavigate();
   const [time, setTime] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { user } = useUser();
-  const userRole = user?.publicMetadata?.role || "citizen";
+  const isAdmin =
+    user?.id === import.meta.env.VITE_ADMIN_CLERK_ID ||
+    user?.publicMetadata?.role === "admin";
+  const userRole = isAdmin ? "admin" : "citizen";
 
   useEffect(() => {
     const updateClock = () => {
@@ -70,7 +70,14 @@ export default function Navbar({ toggleSidebar }) {
 
           <input
             type="text"
-            placeholder="Search reports, locations..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && searchQuery.trim()) {
+                navigate(`/reports?search=${encodeURIComponent(searchQuery.trim())}`);
+              }
+            }}
+            placeholder="Search reports, locations... (Press Enter)"
             className="
               w-full
               rounded-2xl

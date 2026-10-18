@@ -107,13 +107,6 @@ resolutionNotes: {
 
     verifiedAt: Date,
 
-    resolvedAt: Date,
-
-    resolutionNotes: {
-      type: String,
-      default: "",
-    },
-
     priority: {
       type: Number,
       default: 0,

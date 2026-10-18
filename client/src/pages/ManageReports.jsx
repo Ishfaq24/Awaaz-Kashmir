@@ -10,7 +10,6 @@ import { useUser } from "@clerk/clerk-react";
 import {
   Search,
   CheckCircle2,
-  Loader,
   ShieldCheck,
   Trash2,
 } from "lucide-react";

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell, Check, Trash2, CheckCircle2, MessageSquare, AlertTriangle, UserCheck, Settings, ShieldCheck, MapPin } from "lucide-react";
+import { Bell, Check, Trash2, CheckCircle2, MessageSquare, AlertTriangle, UserCheck, Settings, ShieldCheck } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { markAsRead, markAllAsRead, deleteNotification } from "../../api/notifications";

@@ -26,8 +26,12 @@ export default function AIResult() {
   const reportData = location.state;
   const analysis = reportData?.analysis;
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState(
+    () => reportData?.title?.trim() || analysis?.title || "Civic Issue Report"
+  );
+  const [description, setDescription] = useState(
+    () => reportData?.description?.trim() || analysis?.description || ""
+  );
   const [publishing, setPublishing] = useState(false);
   const [confirmingId, setConfirmingId] = useState(null);
   const [alertMessage, setAlertMessage] = useState("");
@@ -35,13 +39,7 @@ export default function AIResult() {
   useEffect(() => {
     if (!reportData?.image || !analysis) {
       navigate("/upload", { replace: true });
-      return;
     }
-
-    setTitle(reportData.title?.trim() || analysis.title || "Civic Issue Report");
-    setDescription(
-      reportData.description?.trim() || analysis.description || ""
-    );
   }, [reportData, analysis, navigate]);
 
   if (!reportData?.image || !analysis) {

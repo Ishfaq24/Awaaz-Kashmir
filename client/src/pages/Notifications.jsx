@@ -108,7 +108,12 @@ export default function Notifications() {
                   notification._id
                 }
                 to={
-                  notification.actionUrl
+                  notification.actionUrl ||
+                  (notification.report?._id
+                    ? `/reports/${notification.report._id}`
+                    : notification.report
+                      ? `/reports/${notification.report}`
+                      : "/reports")
                 }
                 onClick={() =>
                   readMutation.mutate(

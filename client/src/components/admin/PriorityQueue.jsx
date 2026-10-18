@@ -149,7 +149,7 @@ export default function PriorityQueue() {
 
       <ReportDrawer
         open={drawerOpen}
-        report={selectedReport}
+        report={reports.find((r) => r._id === selectedReport?._id) || selectedReport}
         onClose={() => {
           setDrawerOpen(false);
           setSelectedReport(null);

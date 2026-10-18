@@ -10,7 +10,6 @@ import exifr from "exifr";
 import { reverseGeocode } from "../../utils/geocode";
 
 export default function ImageUploader({
-  image,
   setImage,
   preview,
   setPreview,

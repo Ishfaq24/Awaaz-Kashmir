@@ -96,7 +96,9 @@ export default function PublishSuccess() {
               <Bell className="text-awaaz-muted" />
               <div>
                 <p className="text-sm text-awaaz-muted">Status</p>
-                <h3 className="font-bold text-awaaz-secondary">Submitted</h3>
+                <h3 className="font-bold text-awaaz-secondary">
+                  {report?.status || "Submitted"}
+                </h3>
               </div>
             </div>
           </div>

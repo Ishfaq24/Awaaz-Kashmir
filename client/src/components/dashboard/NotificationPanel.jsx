@@ -43,8 +43,9 @@ export default function NotificationPanel() {
       refetch();
     }
 
-    if (notification.report) {
-      navigate(`/reports/${notification.report}`);
+    const reportId = notification.report?._id || notification.report;
+    if (reportId) {
+      navigate(`/reports/${reportId}`);
     }
   };
 

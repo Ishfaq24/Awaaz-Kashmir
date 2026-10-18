@@ -82,7 +82,6 @@ export const createReportService = async (data) => {
     calculatePriority(report);
 
   await report.save();
-  await report.save();
   
   getIO().emit("new-report", report);
   getIO().emit("report-updated", report);

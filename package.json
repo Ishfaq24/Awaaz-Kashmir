@@ -17,10 +17,5 @@
   "type": "commonjs",
   "devDependencies": {
     "concurrently": "^10.0.3"
-  },
-  "dependencies": {
-    "@clerk/express": "^2.1.40",
-    "lucide-react": "file:latest",
-    "recharts": "^3.9.2"
   }
 }

@@ -19,9 +19,9 @@ export default function ReportDrawer({
   report,
   onClose,
 }) {
+  const [resolutionImage, setResolutionImage] = useState(null);
+
   if (!open || !report) return null;
-  const [resolutionImage, setResolutionImage] =
-  useState(null);
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex justify-end">
@@ -62,9 +62,10 @@ export default function ReportDrawer({
   onUpload={setResolutionImage}
 />
           <AdminActions
-  report={report}
-  resolutionImage={resolutionImage}
-/>
+            key={`${report._id}-${report.status}-${report.assignedDepartment}`}
+            report={report}
+            resolutionImage={resolutionImage}
+          />
 
         </div>
 
